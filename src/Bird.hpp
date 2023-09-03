@@ -25,6 +25,8 @@ public:
     bool isMale() const { return isMale_; }
     
     virtual void update();
+    void grow();
+    
     
 private:
     int age_;
