@@ -39,7 +39,7 @@ public:
 		void gotMessage(ofMessage msg);
     
     //simulation
-        
+        void subscribeAliveEntity(std::shared_ptr<Entity> entity);
     //render
     
     

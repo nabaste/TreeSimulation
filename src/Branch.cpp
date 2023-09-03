@@ -25,8 +25,7 @@ void Branch::grow(){
 };
 
 void Branch::spawnChild(){
-//   std::shared_ptr<Branch> childBranchPtr = std::make_shared<Branch>(ofApp_, i);
-//    ofApp_.aliveEntities_.push_back(branchPtr);
-//    addChild(newBranchPtr);
-//    totalBranchCounter_++;
+    std::shared_ptr<Branch> childBranchPtr = std::make_shared<Branch>(ofApp_);
+    ofApp_.subscribeAliveEntity(childBranchPtr);
+    addChild(childBranchPtr);
 };
