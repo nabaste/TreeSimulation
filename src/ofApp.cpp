@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 
-ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0) {
+ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0), branchGrowthPerTurn_(0) {
     
 }
 //--------------------------------------------------------------
@@ -20,12 +20,12 @@ void ofApp::setup(){
     float middleH = ofGetHeight()/2;
     
     //-------- INITIAL BRANCH CREATION
-    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(0);
+    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this, 0);
     aliveEntities_.push_back(rootPtr);
     totalBranchCounter_++;
     
     for(int i=1; i<4; i++){
-        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(i);
+        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this, i);
         aliveEntities_.push_back(branchPtr);
         rootPtr->addChild(branchPtr);
         totalBranchCounter_++;
@@ -37,11 +37,20 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    
+    branchGrowthPerTurn_ = TREE_GROWTH / aliveEntities_.size();
+    
+    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [](std::shared_ptr<Entity>& e) {
+        e->update();
+    });
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [](std::shared_ptr<Entity>& e) {
+        std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
+    });
+    
     for(auto& p : birdPositions_){
         std::cout << "Bird number "<< p.first.id() << " is on branch " << p.second.id() << " with life " << p.first.life() <<"." << std::endl;
     }

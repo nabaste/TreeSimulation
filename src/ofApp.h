@@ -5,6 +5,9 @@
 #include "Branch.hpp"
 #include "Bird.hpp"
 
+class Bird;
+class Branch;
+
 class ofApp : public ofBaseApp{
     
 public:
@@ -12,6 +15,7 @@ public:
     
     //getters, setters
     void subscribeToUpdate(std::shared_ptr<Entity> entity);
+    float branchGrowthPerTurn() { return branchGrowthPerTurn_; };
     
     //update loop
 		void setup();
@@ -40,6 +44,7 @@ private:
     
     int totalBirdCounter_;
     int totalBranchCounter_;
+    float branchGrowthPerTurn_;
     std::list<std::shared_ptr<Entity>> aliveEntities_; //maybe here we do want a smart ptr
     std::map<Bird, Branch> birdPositions_;
 		

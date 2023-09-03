@@ -7,10 +7,18 @@
 
 #include "Branch.hpp"
 
-Branch::Branch(int id) : id_(id), life_(BRANCH_STARTING_LIFE) {
+Branch::Branch(ofApp& ofApp, int id) : Entity(id, BRANCH_STARTING_LIFE), ofApp_(ofApp) {
     
 };
 
 void Branch::update(){
+    grow();
+};
+
+void Branch::grow(){
+    life_ += ofApp_.branchGrowthPerTurn();
+};
+
+void Branch::spawnChild(){
     
 };

@@ -10,26 +10,27 @@
 
 #include <stdio.h>
 #include "Entity.hpp"
+#include "ofApp.h"
+class ofApp;
 
 class Branch : public Entity{
     
 public:
-    Branch(int id);
+    Branch(ofApp& ofApp, int id);
     
     //getters & setters
-    int id() const { return id_; }
-    int life() const { return life_; }
     int stepsFromRoot() const { return stepsFromRoot_; }
     int addChild(std::shared_ptr<Branch> child) { children_.push_back(child); };
     
     virtual void update();
+    void grow();
+    void spawnChild();
     
 private:
-    int id_;
-    int life_;
     int stepsFromRoot_;
     
     std::vector<std::shared_ptr<Branch>> children_;
+    ofApp& ofApp_;
 };
 
 #endif /* Branch_hpp */

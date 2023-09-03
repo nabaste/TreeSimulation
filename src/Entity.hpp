@@ -15,12 +15,17 @@
 class Entity{
   
 public:
+    Entity(int id, float life) : id_(id), life_(life) {}
     virtual ~Entity() {}
+    
+    int id() const { return id_; }
+    float life() const { return life_; }
     
     virtual void update() = 0;
     
     
-private:
-    
+protected:
+    int id_;
+    float life_;
 };
 #endif /* Entity_hpp */
