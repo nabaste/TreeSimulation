@@ -10,6 +10,10 @@ class ofApp : public ofBaseApp{
 public:
     
     ofApp() {}
+    
+    //getters, setters
+    void subscribeToUpdate(std::shared_ptr<Entity> entity);
+    
     //update loop
 		void setup();
 		void update();
@@ -37,7 +41,7 @@ private:
     
     int totalBirdCounter_;
     int totalBranchCounter_;
-    std::list<Entity*> aliveEntities_; //maybe here we do want a smart ptr
+    std::list<std::shared_ptr<Entity>> aliveEntities_; //maybe here we do want a smart ptr
     std::map<Bird, Branch> birdPositions_;
 		
 };

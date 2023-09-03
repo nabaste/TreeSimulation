@@ -9,6 +9,8 @@
 #define Entity_hpp
 
 #include <stdio.h>
+#include <iostream>
+#include "Constants.h"
 
 class Entity{
   

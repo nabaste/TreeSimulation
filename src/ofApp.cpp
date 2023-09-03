@@ -3,6 +3,27 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    ofBackground(23,56,35);
+    ofEnableSmoothing();
+    ofEnableAlphaBlending();
+    ofSetWindowTitle("Tree System");
+        
+    ofSetRectMode(OF_RECTMODE_CENTER);
+        
+    ofSetFrameRate(30);
+        
+    float middleW = ofGetWidth()/2;
+    float middleH = ofGetHeight()/2;
+    
+    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(0);
+    aliveEntities_.push_back(rootPtr);
+    
+    for(int i=1; i<4; i++){
+        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(i);
+        aliveEntities_.push_back(branchPtr);
+        rootPtr->addChild(branchPtr);
+    }
+ 
 }
 
 //--------------------------------------------------------------

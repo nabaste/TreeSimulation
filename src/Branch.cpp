@@ -6,3 +6,11 @@
 //
 
 #include "Branch.hpp"
+
+Branch::Branch(int id) : id_(id), life_(BRANCH_STARTING_LIFE) {
+    
+};
+
+void Branch::update(){
+    
+};
