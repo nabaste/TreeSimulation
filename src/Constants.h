@@ -23,5 +23,7 @@ const float BRANCH_GROWTH_RESULT = 15;
 const float BRANCH_VIABLE_LIFE = 8;
 
 const float TREE_GROWTH = 1.0;
+const int STARTING_BRANCHES = 4;
+const int STARTING_BIRDS = 2;
 
 #endif /* Constants_h */

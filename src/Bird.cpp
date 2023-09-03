@@ -7,7 +7,7 @@
 
 #include "Bird.hpp"
 
-Bird::Bird(ofApp& ofApp): Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), age_(0)
+Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch): Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), branch_(branch), age_(0)
 {
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
@@ -15,6 +15,7 @@ Bird::Bird(ofApp& ofApp): Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), age_(0)
 
 void Bird::update(){
     grow();
+    eat();
 }
 
 void Bird::grow(){
@@ -22,4 +23,8 @@ void Bird::grow(){
     if(age_ > BIRD_LIFE_EXPECTANCY){
         die();
     }
+}
+
+void Bird::eat(){
+    branch_->looseLife(BIRD_FOOD_CONSUMPTION);
 }

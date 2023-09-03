@@ -23,14 +23,18 @@ void ofApp::setup(){
     std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this);
     aliveEntities_.push_back(rootPtr);
     
-    for(int i=1; i<4; i++){
+    for(int i=1; i<STARTING_BRANCHES; i++){
         std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this);
         aliveEntities_.push_back(branchPtr);
         rootPtr->addChild(branchPtr);
     }
     
     //-------- INITIAL BIRDS CREATION
- 
+    for(int i=0; i<STARTING_BIRDS; i++){
+        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getLiveliestBranch());
+        aliveEntities_.push_back(birdPtr);
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -134,4 +138,18 @@ int ofApp::getNewBirdId(){
 
 void ofApp::subscribeAliveEntity(std::shared_ptr<Entity> entity){
     aliveEntities_.push_back(entity);
+}
+
+std::shared_ptr<Branch> ofApp::getLiveliestBranch(){
+    
+    std::shared_ptr<Branch> result = nullptr;
+    
+    for (auto& entityPtr : aliveEntities_) {
+        if (auto branchPtr = std::dynamic_pointer_cast<Branch>(entityPtr)) {
+            if (!result || branchPtr->life() > result->life()) {
+                result = branchPtr;
+            }
+        }
+    }
+    return result;
 }
