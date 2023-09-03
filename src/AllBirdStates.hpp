@@ -16,7 +16,7 @@
 class LookingState : public BirdState
 {
 public:
-    LookingState() {}
+    LookingState() : BirdState(0){}
     
     virtual void update(Bird& bird);
     void lookForMate(Bird& bird);
@@ -26,7 +26,7 @@ public:
 class MatingState : public BirdState
 {
 public:
-    MatingState() {}
+    MatingState() : BirdState(1){}
     
     virtual void update(Bird& bird);
 };
@@ -35,7 +35,7 @@ public:
 class RaisingState : public BirdState
 {
 public:
-    RaisingState() : elapsedTurns_(0) {}
+    RaisingState() : BirdState(2), elapsedTurns_(0) {}
     
     virtual void update(Bird& bird);
 private:
@@ -46,7 +46,7 @@ private:
 class GrowingState : public BirdState
 {
 public:
-    GrowingState() : elapsedTurns_(0) {}
+    GrowingState() : BirdState(3), elapsedTurns_(0) {}
     
     virtual void update(Bird& bird);
 private:
@@ -57,7 +57,7 @@ private:
 class WaitingForMateState : public BirdState
 {
 public:
-    WaitingForMateState() {}
+    WaitingForMateState() : BirdState(4) {}
     
     virtual void update(Bird& bird);
 };

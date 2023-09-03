@@ -25,10 +25,14 @@ public:
     
     Bird(ofApp& ofApp, std::shared_ptr<Branch> branch);
 
-    // Getters
+    // Getters && Setters
     int age() const { return age_; }
     bool isMale() const { return isMale_; }
     std::shared_ptr<Branch> branch() { return branch_; }
+    ofApp& getOfApp() { return ofApp_; }
+    int getState() {  return state_->id(); }
+    void setState(BirdState* state) { state_ = state; }
+    
     
     virtual void update();
     void grow();

@@ -15,9 +15,14 @@ class Bird;
 class BirdState
 {
 public:
+    BirdState(int id) : id_(id) {}
     virtual ~BirdState() {}
     virtual void update(Bird& bird) {}
     virtual void lateUpdate(Bird& bird) {}
+    int id() {return id_; }
+    
+private:
+    int id_;
 };
 
 #endif /* BirdState_hpp */
