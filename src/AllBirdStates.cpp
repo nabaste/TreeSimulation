@@ -14,10 +14,10 @@ void LookingState::update(Bird& bird) {
     if (bird.life() > BIRD_MATING_POINT) {
         lookForMate(bird);
     } else {
-//        std::shared_ptr<Branch> destination = Tree::instance().getRandomViableBranch();
-//        BirdState* nextStatePtr = new LookingState();
-//        BirdState* newStatePtr = new MovingState(bird , nextStatePtr, destination->X, destination->Y);
-//        bird.setState(newStatePtr);
+        std::shared_ptr<Branch> destination = bird.getOfApp().getLiveliestBranch();
+        BirdState* nextStatePtr = new LookingState();
+        BirdState* newStatePtr = new MovingState(bird , nextStatePtr, destination);
+        bird.setState(newStatePtr);
     }
 }
 
@@ -32,5 +32,23 @@ void LookingState::lookForMate(Bird& bird){
             //BirdState* newStatePtr = new MatingState();
             //setState(newStatePtr);
         }
+    }
+}
+
+MovingState::MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination):
+BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), elapsedTurns_(0) {
+    
+    glm::vec3 travel = destination->position - bird.position;
+    travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
+    glm::vec3 mpt{(destination->position.x - bird.position.x)/travelDuration_, (destination->position.y - bird.position.y)/travelDuration_, 0} ;
+    movementPerTurn_ = mpt;
+}
+
+void MovingState::update(Bird& bird){
+    bird.position += movementPerTurn_;
+    elapsedTurns_++;
+    if (elapsedTurns_ == travelDuration_){
+        BirdState* newStatePtr = nextState_;
+        bird.setState(newStatePtr);
     }
 }

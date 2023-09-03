@@ -12,6 +12,7 @@ Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch): Entity(BIRD_STARTING_L
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
     state_ = new LookingState();
+    position = branch_->position;
 }
 
 void Bird::update(){

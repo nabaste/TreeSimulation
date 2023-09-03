@@ -8,10 +8,12 @@
 #ifndef AllBirdStates_hpp
 #define AllBirdStates_hpp
 
+
+#include <iostream>
 #include <stdio.h>
 #include "BirdState.hpp"
-//class BirdState;
-
+#include "Branch.hpp"
+class Branch;
 
 class LookingState : public BirdState
 {
@@ -66,19 +68,17 @@ public:
 class MovingState : public BirdState
 {
 public:
-    MovingState(Bird& bird, BirdState* nextState, float destinationX, float destinationY);
+    MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination);
     
     virtual void update(Bird& bird);
     
 private:
     Bird& bird_;
     BirdState* nextState_;
+    std::shared_ptr<Branch> destination_;
     int elapsedTurns_;
-    float destinationX_;
-    float destinationY_;
     int travelDuration_;
-    float movementPerTurnX_;
-    float movementPerTurnY_;
+    glm::vec3 movementPerTurn_;
     
 };
 #endif /* AllBirdStates_hpp */

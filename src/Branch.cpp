@@ -7,7 +7,7 @@
 
 #include "Branch.hpp"
 
-Branch::Branch(ofApp& ofApp) : Entity(BRANCH_STARTING_LIFE), ofApp_(ofApp) {
+Branch::Branch(ofApp& ofApp, int steps) : Entity(BRANCH_STARTING_LIFE), ofApp_(ofApp), stepsFromRoot_(steps) {
     id_=ofApp.getNewBranchId();
 };
 
@@ -25,9 +25,11 @@ void Branch::grow(){
 };
 
 void Branch::spawnChild(){
-    std::shared_ptr<Branch> childBranchPtr = std::make_shared<Branch>(ofApp_);
+    std::shared_ptr<Branch> childBranchPtr = std::make_shared<Branch>(ofApp_, stepsFromRoot_+1);
     ofApp_.subscribeAliveEntity(childBranchPtr);
     addChild(childBranchPtr);
+    
+    relocateChildren();
 };
 
 void Branch::looseLife(float amount){
@@ -45,4 +47,19 @@ void Branch::removeDeadChildren()
     children_.erase(std::remove_if(children_.begin(), children_.end(),
     [](const std::shared_ptr<Branch>& e) {return e->markedForDeath;}),
                     children_.end());
+}
+
+void Branch::relocateChildren()
+{
+    float separation = 0.15 * exp(-0.5 * stepsFromRoot_);
+    //float separation = 0.1;
+    for (int i=0; i<children_.size(); i++) {
+        float angleIncrement = 2 * M_PI / children_.size();
+        float angle = angleIncrement * i;
+        float xOffset = separation * cos(angle);
+        float yOffset = separation * sin(angle);
+        
+        glm::vec3 newPos{position.x + xOffset, position.y + yOffset, 0};
+        children_[i]->position = newPos;
+    }
 }

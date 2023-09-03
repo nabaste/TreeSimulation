@@ -16,7 +16,7 @@ class ofApp;
 class Branch : public Entity{
     
 public:
-    Branch(ofApp& ofApp);
+    Branch(ofApp& ofApp, int steps);
     
     //getters & setters
     int stepsFromRoot() const { return stepsFromRoot_; }
@@ -27,6 +27,9 @@ public:
     void spawnChild();
     void looseLife(float amount);
     void removeDeadChildren();
+    
+    //render
+    void relocateChildren();
     
 private:
     int stepsFromRoot_;

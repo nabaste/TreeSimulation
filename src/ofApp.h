@@ -43,15 +43,14 @@ public:
     //simulation
         void subscribeAliveEntity(std::shared_ptr<Entity> entity);
         std::shared_ptr<Branch> getLiveliestBranch();
-    //render
     
+    //render
     
 private:
     
     int totalBirdCounter_;
     int totalBranchCounter_;
     float branchGrowthPerTurn_;
-    std::list<std::shared_ptr<Entity>> aliveEntities_; //maybe here we do want a smart ptr
-    //std::map<Bird, Branch> birdPositions_;
+    std::list<std::shared_ptr<Entity>> aliveEntities_;
 		
 };

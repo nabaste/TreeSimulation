@@ -20,14 +20,16 @@ void ofApp::setup(){
     float middleH = ofGetHeight()/2;
     
     //-------- INITIAL BRANCH CREATION
-    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this);
+    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this, 0);
     aliveEntities_.push_back(rootPtr);
     
     for(int i=1; i<STARTING_BRANCHES; i++){
-        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this);
+        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this, 1);
         aliveEntities_.push_back(branchPtr);
         rootPtr->addChild(branchPtr);
     }
+    
+    rootPtr->relocateChildren();
     
     //-------- INITIAL BIRDS CREATION
     for(int i=0; i<STARTING_BIRDS; i++){
@@ -55,14 +57,20 @@ void ofApp::draw(){
     std::cout << "There are " << getAliveBranchAmount() << " branches alive." << std::endl;
     std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
         std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
+        ofColor color1(135 + 40*e->stepsFromRoot(), 234, 54);
+        ofSetColor(color1);
+        ofDrawCircle(e->position.x * ofGetWidth(), e->position.y * ofGetHeight(), e->life()/3.0);
     });
+    
+    ofColor color2(235, 134, 54);
+    ofSetColor(color2);
     std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
+        glm::vec3 screenPos = e->position * glm::vec3(ofGetWidth(), ofGetHeight(), 0);
+        ofDrawRectangle(screenPos, 10, 10);
         std:cout << "Bird number " << e->id() << " has a life of " << e->life() << std::endl;
     });
     
-//    for(auto& p : birdPositions_){
-//        std::cout << "Bird number "<< p.first.id() << " is on branch " << p.second.id() << " with life " << p.first.life() <<"." << std::endl;
-//    }
+
 }
 
 //--------------------------------------------------------------

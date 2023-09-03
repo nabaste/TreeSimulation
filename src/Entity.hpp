@@ -11,11 +11,13 @@
 #include <stdio.h>
 #include <iostream>
 #include "Constants.h"
+#include "ofMain.h"
 
 class Entity{
   
 public:
-    Entity(float life) : id_(0), life_(life), markedForDeath(false) {}
+    Entity(float life) : id_(0), life_(life), position(0.5), markedForDeath(false) {}
+    Entity(float life, glm::vec3 pos) : id_(0), life_(life), position(pos), markedForDeath(false) {}
     virtual ~Entity() {}
     
     int id() const { return id_; }
@@ -25,7 +27,7 @@ public:
     void die();
     
     bool markedForDeath;
-    
+    glm::vec3 position;
     
 protected:
     int id_;
