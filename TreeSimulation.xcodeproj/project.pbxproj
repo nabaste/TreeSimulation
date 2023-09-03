@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51C444482AA4FDA200775317 /* AllBirdStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51C444462AA4FDA200775317 /* AllBirdStates.cpp */; };
+		51C4444B2AA4FDC900775317 /* BirdState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51C444492AA4FDC900775317 /* BirdState.cpp */; };
 		51D655D92AA48DFA00D8620E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51D655D72AA48DFA00D8620E /* Entity.cpp */; };
 		51D655DC2AA48EB200D8620E /* Branch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51D655DA2AA48EB200D8620E /* Branch.cpp */; };
 		51D655DF2AA48EF600D8620E /* Bird.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51D655DD2AA48EF600D8620E /* Bird.cpp */; };
@@ -27,6 +29,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		51C444462AA4FDA200775317 /* AllBirdStates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AllBirdStates.cpp; sourceTree = "<group>"; };
+		51C444472AA4FDA200775317 /* AllBirdStates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AllBirdStates.hpp; sourceTree = "<group>"; };
+		51C444492AA4FDC900775317 /* BirdState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BirdState.cpp; sourceTree = "<group>"; };
+		51C4444A2AA4FDC900775317 /* BirdState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BirdState.hpp; sourceTree = "<group>"; };
 		51D655D72AA48DFA00D8620E /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		51D655D82AA48DFA00D8620E /* Entity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
 		51D655DA2AA48EB200D8620E /* Branch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Branch.cpp; sourceTree = "<group>"; };
@@ -550,6 +556,10 @@
 				51D655DD2AA48EF600D8620E /* Bird.cpp */,
 				51D655DE2AA48EF600D8620E /* Bird.hpp */,
 				51D655E02AA494D000D8620E /* Constants.h */,
+				51C444462AA4FDA200775317 /* AllBirdStates.cpp */,
+				51C444472AA4FDA200775317 /* AllBirdStates.hpp */,
+				51C444492AA4FDC900775317 /* BirdState.cpp */,
+				51C4444A2AA4FDC900775317 /* BirdState.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -654,6 +664,8 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				51D655DC2AA48EB200D8620E /* Branch.cpp in Sources */,
+				51C4444B2AA4FDC900775317 /* BirdState.cpp in Sources */,
+				51C444482AA4FDA200775317 /* AllBirdStates.cpp in Sources */,
 				51D655D92AA48DFA00D8620E /* Entity.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				51D655DF2AA48EF600D8620E /* Bird.cpp in Sources */,

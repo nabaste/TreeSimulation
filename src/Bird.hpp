@@ -13,8 +13,11 @@
 #include "Constants.h"
 #include "ofApp.h"
 #include "Branch.hpp"
+#include "BirdState.hpp"
+#include "AllBirdStates.hpp"
 class ofApp;
 class Branch;
+class BirdState;
 
 class Bird : public Entity {
 
@@ -38,6 +41,7 @@ private:
     ofApp& ofApp_;
     
     std::shared_ptr<Branch> branch_;
+    BirdState* state_;
 };
 
 #endif /* Bird_hpp */
