@@ -15,13 +15,16 @@
 class Entity{
   
 public:
-    Entity(float life) : id_(0), life_(life) {}
+    Entity(float life) : id_(0), life_(life), markedForDeath(false) {}
     virtual ~Entity() {}
     
     int id() const { return id_; }
     float life() const { return life_; }
     
     virtual void update() = 0;
+    void die();
+    
+    bool markedForDeath;
     
     
 protected:

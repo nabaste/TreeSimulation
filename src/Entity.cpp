@@ -7,3 +7,6 @@
 
 #include "Entity.hpp"
 
+void Entity::die(){
+    markedForDeath = true;
+}

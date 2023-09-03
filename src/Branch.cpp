@@ -29,3 +29,20 @@ void Branch::spawnChild(){
     ofApp_.subscribeAliveEntity(childBranchPtr);
     addChild(childBranchPtr);
 };
+
+void Branch::looseLife(float amount){
+    life_ -= amount;
+    if( life_ <0 ){
+        die();
+        std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
+        //tell parent branch to remove me
+        //tell birds to move elsewhere
+    }
+}
+
+void Branch::removeDeadChildren()
+{
+    children_.erase(std::remove_if(children_.begin(), children_.end(),
+    [](const std::shared_ptr<Branch>& e) {return e->markedForDeath;}),
+                    children_.end());
+}

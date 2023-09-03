@@ -25,6 +25,8 @@ public:
     virtual void update();
     void grow();
     void spawnChild();
+    void looseLife(float amount);
+    void removeDeadChildren();
     
 private:
     int stepsFromRoot_;
