@@ -49,9 +49,15 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    std::list<shared_ptr<Branch>> branches = getBranches();
+    std::list<shared_ptr<Bird>> birds = getBirds();
+    
     std::cout << "There are " << getAliveBranchAmount() << " branches alive." << std::endl;
-    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [](std::shared_ptr<Entity>& e) {
+    std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
         std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
+    });
+    std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
+        std:cout << "Bird number " << e->id() << " has a life of " << e->life() << std::endl;
     });
     
 //    for(auto& p : birdPositions_){
@@ -149,6 +155,28 @@ std::shared_ptr<Branch> ofApp::getLiveliestBranch(){
             if (!result || branchPtr->life() > result->life()) {
                 result = branchPtr;
             }
+        }
+    }
+    return result;
+}
+
+std::list<shared_ptr<Branch>> ofApp::getBranches(){
+    std::list<shared_ptr<Branch>> result;
+    for (const auto& entityPtr : aliveEntities_) {
+        // Check if the dynamic type of the object pointed to by entityPtr is Branch
+        if (dynamic_cast<Branch*>(entityPtr.get()) != nullptr) {
+            result.push_back(std::dynamic_pointer_cast<Branch>(entityPtr));
+        }
+    }
+    return result;
+}
+
+std::list<shared_ptr<Bird>> ofApp::getBirds(){
+    std::list<shared_ptr<Bird>> result;
+    for (const auto& entityPtr : aliveEntities_) {
+        // Check if the dynamic type of the object pointed to by entityPtr is Branch
+        if (dynamic_cast<Bird*>(entityPtr.get()) != nullptr) {
+            result.push_back(std::dynamic_pointer_cast<Bird>(entityPtr));
         }
     }
     return result;

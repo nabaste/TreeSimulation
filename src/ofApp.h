@@ -19,6 +19,8 @@ public:
     int getAliveBranchAmount();
     int getNewBranchId();
     int getNewBirdId();
+    std::list<shared_ptr<Branch>> getBranches();
+    std::list<shared_ptr<Bird>> getBirds();
     
     //update loop
 		void setup();
