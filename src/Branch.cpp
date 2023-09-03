@@ -13,6 +13,11 @@ Branch::Branch(ofApp& ofApp, int id) : Entity(id, BRANCH_STARTING_LIFE), ofApp_(
 
 void Branch::update(){
     grow();
+    if (life_ > BRANCH_GROWTH_POINT)
+      {
+          spawnChild();
+          life_ = BRANCH_GROWTH_RESULT;
+      }
 };
 
 void Branch::grow(){
@@ -20,5 +25,8 @@ void Branch::grow(){
 };
 
 void Branch::spawnChild(){
-    
+//   std::shared_ptr<Branch> childBranchPtr = std::make_shared<Branch>(ofApp_, i);
+//    ofApp_.aliveEntities_.push_back(branchPtr);
+//    addChild(newBranchPtr);
+//    totalBranchCounter_++;
 };

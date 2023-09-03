@@ -16,6 +16,7 @@ public:
     //getters, setters
     void subscribeToUpdate(std::shared_ptr<Entity> entity);
     float branchGrowthPerTurn() { return branchGrowthPerTurn_; };
+    int getAliveBranchAmount();
     
     //update loop
 		void setup();
@@ -46,6 +47,6 @@ private:
     int totalBranchCounter_;
     float branchGrowthPerTurn_;
     std::list<std::shared_ptr<Entity>> aliveEntities_; //maybe here we do want a smart ptr
-    std::map<Bird, Branch> birdPositions_;
+    //std::map<Bird, Branch> birdPositions_;
 		
 };

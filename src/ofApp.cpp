@@ -47,13 +47,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    std::cout << "There are " << getAliveBranchAmount() << " branches alive." << std::endl;
     std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [](std::shared_ptr<Entity>& e) {
         std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
     });
     
-    for(auto& p : birdPositions_){
-        std::cout << "Bird number "<< p.first.id() << " is on branch " << p.second.id() << " with life " << p.first.life() <<"." << std::endl;
-    }
+//    for(auto& p : birdPositions_){
+//        std::cout << "Bird number "<< p.first.id() << " is on branch " << p.second.id() << " with life " << p.first.life() <<"." << std::endl;
+//    }
 }
 
 //--------------------------------------------------------------
@@ -109,4 +110,16 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+int ofApp::getAliveBranchAmount() {
+    int branchCount = 0;
+    for (const auto& entityPtr : aliveEntities_) {
+        // Check if the dynamic type of the object pointed to by entityPtr is Branch
+        if (dynamic_cast<Branch*>(entityPtr.get()) != nullptr) {
+            branchCount++;
+        }
+    }
+    return branchCount;
 }
