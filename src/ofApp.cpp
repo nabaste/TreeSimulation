@@ -1,5 +1,9 @@
 #include "ofApp.h"
 
+
+ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0) {
+    
+}
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -15,14 +19,19 @@ void ofApp::setup(){
     float middleW = ofGetWidth()/2;
     float middleH = ofGetHeight()/2;
     
+    //-------- INITIAL BRANCH CREATION
     std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(0);
     aliveEntities_.push_back(rootPtr);
+    totalBranchCounter_++;
     
     for(int i=1; i<4; i++){
         std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(i);
         aliveEntities_.push_back(branchPtr);
         rootPtr->addChild(branchPtr);
+        totalBranchCounter_++;
     }
+    
+    //-------- INITIAL BIRDS CREATION
  
 }
 

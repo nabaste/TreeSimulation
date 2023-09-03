@@ -8,8 +8,7 @@
 class ofApp : public ofBaseApp{
     
 public:
-    
-    ofApp() {}
+    ofApp();
     
     //getters, setters
     void subscribeToUpdate(std::shared_ptr<Entity> entity);
