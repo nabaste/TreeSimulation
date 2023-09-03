@@ -20,15 +20,13 @@ void ofApp::setup(){
     float middleH = ofGetHeight()/2;
     
     //-------- INITIAL BRANCH CREATION
-    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this, 0);
+    std::shared_ptr<Branch> rootPtr = std::make_shared<Branch>(*this);
     aliveEntities_.push_back(rootPtr);
-    totalBranchCounter_++;
     
     for(int i=1; i<4; i++){
-        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this, i);
+        std::shared_ptr<Branch> branchPtr = std::make_shared<Branch>(*this);
         aliveEntities_.push_back(branchPtr);
         rootPtr->addChild(branchPtr);
-        totalBranchCounter_++;
     }
     
     //-------- INITIAL BIRDS CREATION
@@ -122,4 +120,14 @@ int ofApp::getAliveBranchAmount() {
         }
     }
     return branchCount;
+}
+
+int ofApp::getNewBranchId(){
+    totalBranchCounter_++;
+    return totalBranchCounter_ - 1; //so that it is 0 indexed
+}
+
+int ofApp::getNewBirdId(){
+    totalBirdCounter_++;
+    return totalBirdCounter_ - 1;
 }

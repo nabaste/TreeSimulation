@@ -15,7 +15,7 @@
 class Entity{
   
 public:
-    Entity(int id, float life) : id_(id), life_(life) {}
+    Entity(float life) : id_(0), life_(life) {}
     virtual ~Entity() {}
     
     int id() const { return id_; }

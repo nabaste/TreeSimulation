@@ -7,8 +7,8 @@
 
 #include "Branch.hpp"
 
-Branch::Branch(ofApp& ofApp, int id) : Entity(id, BRANCH_STARTING_LIFE), ofApp_(ofApp) {
-    
+Branch::Branch(ofApp& ofApp) : Entity(BRANCH_STARTING_LIFE), ofApp_(ofApp) {
+    id_=ofApp.getNewBranchId();
 };
 
 void Branch::update(){

@@ -16,7 +16,7 @@ class ofApp;
 class Branch : public Entity{
     
 public:
-    Branch(ofApp& ofApp, int id);
+    Branch(ofApp& ofApp);
     
     //getters & setters
     int stepsFromRoot() const { return stepsFromRoot_; }

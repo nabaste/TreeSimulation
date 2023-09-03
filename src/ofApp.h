@@ -17,6 +17,8 @@ public:
     void subscribeToUpdate(std::shared_ptr<Entity> entity);
     float branchGrowthPerTurn() { return branchGrowthPerTurn_; };
     int getAliveBranchAmount();
+    int getNewBranchId();
+    int getNewBirdId();
     
     //update loop
 		void setup();
