@@ -6,3 +6,9 @@
 //
 
 #include "Bird.hpp"
+
+Bird::Bird(ofApp& ofApp): Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), age_(0)
+{
+    id_ = ofApp.getNewBirdId();
+    isMale_ = rand() % 2;
+}
