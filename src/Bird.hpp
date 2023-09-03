@@ -14,11 +14,12 @@
 class Bird : public Entity {
 
 public:
+    
     // Getters
-    int id() { return id_; }
-    const int age() { return age_; }
-    const float life() { return life_; }
-    const bool isMale() { return isMale_; }
+    int id() const { return id_; }
+    int age() const { return age_; }
+    float life() const { return life_; }
+    bool isMale() const { return isMale_; }
     
     virtual void update();
     

@@ -12,7 +12,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    for(auto& p : birdPositions_){
+        std::cout << "Bird number "<< p.first.id() << " is on branch " << p.second.id() << "." << std::endl;
+    }
 }
 
 //--------------------------------------------------------------

@@ -16,9 +16,9 @@ class Branch : public Entity{
 public:
     
     //getters
-    int id() { return id_; }
-    const int life() { return life_; }
-    const int stepsFromRoot() { return stepsFromRoot_; }
+    int id() const { return id_; }
+    int life() const { return life_; }
+    int stepsFromRoot() const { return stepsFromRoot_; }
     
     virtual void update();
     
