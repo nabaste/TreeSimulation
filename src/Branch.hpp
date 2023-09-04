@@ -20,7 +20,8 @@ public:
     
     //getters & setters
     int stepsFromRoot() const { return stepsFromRoot_; }
-    int addChild(std::shared_ptr<Branch> child) { children_.push_back(child); };
+    void addChild(std::shared_ptr<Branch> child);
+    void setParent(std::shared_ptr<Branch> parent) { parent_ = parent; }
     
     virtual void update();
     void grow();
@@ -34,6 +35,7 @@ public:
 private:
     int stepsFromRoot_;
     
+    std::shared_ptr<Branch> parent_;
     std::vector<std::shared_ptr<Branch>> children_;
     ofApp& ofApp_;
 };

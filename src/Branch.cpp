@@ -9,7 +9,15 @@
 
 Branch::Branch(ofApp& ofApp, int steps) : Entity(BRANCH_STARTING_LIFE), ofApp_(ofApp), stepsFromRoot_(steps) {
     id_=ofApp.getNewBranchId();
+    parent_ = nullptr;
 };
+
+void Branch::addChild(std::shared_ptr<Branch> child){
+    
+    children_.push_back(child);
+    child->setParent(std::make_shared<Branch>(*this));
+    
+}
 
 void Branch::update(){
     grow();
@@ -18,6 +26,7 @@ void Branch::update(){
           spawnChild();
           life_ = BRANCH_GROWTH_RESULT;
       }
+    
 };
 
 void Branch::grow(){
@@ -37,8 +46,10 @@ void Branch::looseLife(float amount){
     if( life_ <0 ){
         die();
         std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
-        //tell parent branch to remove me
+        
         //tell birds to move elsewhere
+        removeDeadChildren();
+        parent_->removeDeadChildren();
     }
 }
 
