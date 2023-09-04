@@ -26,5 +26,6 @@ const float BRANCH_VIABLE_LIFE = 8;
 const float TREE_GROWTH = 1.0;
 const int STARTING_BRANCHES = 4;
 const int STARTING_BIRDS = 6;
+const int STARTING_BIRDS_AGE = 400;
 
 #endif /* Constants_h */

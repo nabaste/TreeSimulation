@@ -57,13 +57,8 @@ void LookingState::lookForMate(Bird& bird){
     }
 }
 
-//if there is another bird with enough life, of the opposite gender in my branch
-//if that is waiting for mate
-//if that is looking for mate
-//
 
-
-
+//----------------------------------------------------------------------------------------------------
 MovingState::MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination):
 BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), elapsedTurns_(0) {
     
@@ -84,22 +79,52 @@ void MovingState::update(Bird& bird){
     }
 }
 
+//----------------------------------------------------------------------------------------------------
 void MatingState::update(Bird& bird){
-//    bird.eat();
-//    if (!bird.isMale()){
-//        spawnChild();
-//        if(rand() % 2){ //50% chance to keep spawning or start raising
-//            BirdState* newState = new RaisingState();
-//            bird.setState(newState);
-//            
-//        }
-//    }
+    bird.eat();
+    if (!bird.isMale()){
+        spawnChild(bird);
+        if(rand() % 2){ //50% chance to keep spawning or start raising
+            BirdState* newState = new RaisingState(children_);
+            bird.setState(newState);
+            partner_->setState(newState);
+        }
+    }
 }
 
-void MatingState::spawnChild(){
+void MatingState::spawnChild(Bird& bird){
+    std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(bird.getOfApp(), bird.branch());
+    bird.getOfApp().subscribeAliveEntity(birdPtr);
+    children_.push_back(birdPtr);
+}
+
+//----------------------------------------------------------------------------------------------------
+void RaisingState::update(Bird& bird){
+    bird.eat();
+    bird.eat();
     
+    int childrenLeft = 0;
+    for(const auto& p : children_){
+        if( p->getState() == 3){
+            p->eat();
+            childrenLeft++;
+        }
+    }
+    if(childrenLeft == 0){
+        BirdState* newState = new LookingState();
+        bird.setState(newState);
+    }
 }
 
+//----------------------------------------------------------------------------------------------------
+void GrowingState::update(Bird& bird){
+    if( bird.age() >= BIRD_INFANCY_PERCENTAGE * BIRD_LIFE_EXPECTANCY ){
+        BirdState* newState = new LookingState();
+        bird.setState(newState);
+    }
+}
+
+//----------------------------------------------------------------------------------------------------
 void WaitingForMateState::update(Bird& bird){
     bird.eat();
 }

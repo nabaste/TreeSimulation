@@ -24,6 +24,7 @@ class Bird : public Entity {
 public:
     
     Bird(ofApp& ofApp, std::shared_ptr<Branch> branch);
+    Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, BirdState* state, int age);
 
     // Getters && Setters
     int age() const { return age_; }

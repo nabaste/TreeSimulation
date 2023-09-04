@@ -18,46 +18,11 @@ class Branch;
 class LookingState : public BirdState
 {
 public:
-    LookingState() : BirdState(0), elapsedTurns_(0) {}
+    LookingState() : BirdState(0), elapsedTurns_(0) {} //Ya se, podria hacer un enum
     
     virtual void update(Bird& bird);
     void lookForMate(Bird& bird);
     void getMated(Bird& bird);
-private:
-    int elapsedTurns_;
-};
-
-//--------------------------------------------------------------
-class MatingState : public BirdState
-{
-public:
-    MatingState(std::shared_ptr<Bird> partner) : BirdState(1), partner_(partner){}
-    
-    virtual void update(Bird& bird);
-    void spawnChild();
-    
-private:
-    std::shared_ptr<Bird> partner_;
-};
-
-//--------------------------------------------------------------
-class RaisingState : public BirdState
-{
-public:
-    RaisingState() : BirdState(2), elapsedTurns_(0) {}
-    
-    virtual void update(Bird& bird);
-private:
-    int elapsedTurns_;
-};
-
-//--------------------------------------------------------------
-class GrowingState : public BirdState
-{
-public:
-    GrowingState() : BirdState(3), elapsedTurns_(0) {}
-    
-    virtual void update(Bird& bird);
 private:
     int elapsedTurns_;
 };
@@ -69,6 +34,44 @@ public:
     WaitingForMateState() : BirdState(4) {}
     
     virtual void update(Bird& bird);
+};
+
+//--------------------------------------------------------------
+class MatingState : public BirdState
+{
+public:
+    MatingState(std::shared_ptr<Bird> partner) : BirdState(1), partner_(partner){}
+    
+    virtual void update(Bird& bird);
+    void spawnChild(Bird& bird);
+    
+private:
+    std::shared_ptr<Bird> partner_;
+    std::list<shared_ptr<Bird>> children_;
+};
+
+//--------------------------------------------------------------
+class RaisingState : public BirdState
+{
+public:
+    RaisingState(std::list<shared_ptr<Bird>> children) : BirdState(2), elapsedTurns_(0), children_(children) {}
+    
+    virtual void update(Bird& bird);
+private:
+    int elapsedTurns_;
+    std::list<shared_ptr<Bird>> children_;
+};
+
+//--------------------------------------------------------------
+class GrowingState : public BirdState
+{
+public:
+    GrowingState() : BirdState(3), elapsedTurns_(0) {}
+    
+    virtual void update(Bird& bird);
+    
+private:
+    int elapsedTurns_;
 };
 
 //--------------------------------------------------------------
