@@ -62,4 +62,8 @@ void Branch::relocateChildren()
         glm::vec3 newPos{position.x + xOffset, position.y + yOffset, 0};
         children_[i]->position = newPos;
     }
+    
+    for(const auto& p : ofApp_.getBirds()){
+        p->refreshPosition();
+    }
 }

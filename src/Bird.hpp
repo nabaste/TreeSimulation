@@ -35,10 +35,13 @@ public:
     void setState(BirdState* state) { state_ = state; }
     void setBranch(std::shared_ptr<Branch> branch) { branch_ = branch; }
     
-    
+    // Simulation
     virtual void update();
     void grow();
     void eat();
+    
+    // Render
+    void refreshPosition();
     
 private:
     int age_;

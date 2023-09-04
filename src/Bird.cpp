@@ -38,3 +38,7 @@ void Bird::eat(){
     branch_->looseLife(BIRD_FOOD_CONSUMPTION);
     life_ += BIRD_LIFE_GROWTH;
 }
+
+void Bird::refreshPosition(){
+    position = branch_->position;
+}
