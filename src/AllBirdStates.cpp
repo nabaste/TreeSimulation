@@ -11,29 +11,58 @@ class Bird;
 
 void LookingState::update(Bird& bird) {
     bird.eat();
-    if (bird.life() > BIRD_MATING_POINT) {
-        lookForMate(bird);
-    } else {
-        std::shared_ptr<Branch> destination = bird.getOfApp().getLiveliestBranch();
+    if (elapsedTurns_ >= BIRD_TURNS_WAITING_FOR_MATE){
+        std::shared_ptr<Branch> destination = bird.getOfApp().getRandomViableBranch(bird.id());
         BirdState* nextStatePtr = new LookingState();
         BirdState* newStatePtr = new MovingState(bird , nextStatePtr, destination);
         bird.setState(newStatePtr);
+        elapsedTurns_ = 0;
     }
+    if (bird.life() > BIRD_MATING_POINT) {
+        lookForMate(bird);
+    }
+    elapsedTurns_++;
 }
 
 void LookingState::lookForMate(Bird& bird){
+    std::shared_ptr<Bird> result;
     for(const auto& p : bird.getOfApp().getBirds()){
         if (p->id() == bird.id()) return;
-        if (p->life() > BIRD_MATING_POINT && bird.isMale() != p->isMale() && p->getState() == 0) {
-            //check if they're on different branches
-            //moveTo(p.second->data());
-            //p.first->getMated();
-            
-            //BirdState* newStatePtr = new MatingState();
-            //setState(newStatePtr);
+        if (p->life() > BIRD_MATING_POINT && bird.isMale() != p->isMale()){
+            if( bird.branch()->id() == p->branch()->id() && p->getState() == 4){
+                BirdState* newStatePtr = new MatingState(p);
+                BirdState* newStateForPartner = new MatingState(std::make_shared<Bird>(bird));
+                bird.setState(newStatePtr);
+                p->setState(newStatePtr);
+                return;
+            }
+            else if (bird.branch()->id() == p->branch()->id() && p->getState() == 0){
+                BirdState* newStatePtr = new MatingState(p);
+                BirdState* newStateForPartner = new MatingState(std::make_shared<Bird>(bird));
+                bird.setState(newStatePtr);
+                p->setState(newStatePtr);
+                return;
+            }
+            else if (bird.branch()->id() != p->branch()->id() && p->getState() == 0){
+                BirdState* nextStatePtr = new LookingState();
+                BirdState* newStatePtr = new MovingState(bird, nextStatePtr, p->branch());
+                bird.setState(newStatePtr);
+                
+                //set the other bird to waiting so that they don't leave.
+                BirdState* newStateOtherBirdPtr = new WaitingForMateState();
+                p->setState(newStateOtherBirdPtr);
+                return;
+            }
         }
     }
 }
+
+//if there is another bird with enough life, of the opposite gender in my branch
+//if that is waiting for mate
+//if that is looking for mate
+//
+
+
 
 MovingState::MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination):
 BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), elapsedTurns_(0) {
@@ -48,7 +77,29 @@ void MovingState::update(Bird& bird){
     bird.position += movementPerTurn_;
     elapsedTurns_++;
     if (elapsedTurns_ == travelDuration_){
+        bird.setBranch(destination_);
+        bird.position = destination_->position;
         BirdState* newStatePtr = nextState_;
         bird.setState(newStatePtr);
     }
+}
+
+void MatingState::update(Bird& bird){
+//    bird.eat();
+//    if (!bird.isMale()){
+//        spawnChild();
+//        if(rand() % 2){ //50% chance to keep spawning or start raising
+//            BirdState* newState = new RaisingState();
+//            bird.setState(newState);
+//            
+//        }
+//    }
+}
+
+void MatingState::spawnChild(){
+    
+}
+
+void WaitingForMateState::update(Bird& bird){
+    bird.eat();
 }

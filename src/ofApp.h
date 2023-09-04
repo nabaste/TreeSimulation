@@ -43,6 +43,7 @@ public:
     //simulation
         void subscribeAliveEntity(std::shared_ptr<Entity> entity);
         std::shared_ptr<Branch> getLiveliestBranch();
+        std::shared_ptr<Branch> getRandomViableBranch(int seed);
     
     //render
     

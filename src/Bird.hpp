@@ -32,6 +32,7 @@ public:
     ofApp& getOfApp() { return ofApp_; }
     int getState() {  return state_->id(); }
     void setState(BirdState* state) { state_ = state; }
+    void setBranch(std::shared_ptr<Branch> branch) { branch_ = branch; }
     
     
     virtual void update();

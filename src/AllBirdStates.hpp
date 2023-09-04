@@ -18,19 +18,26 @@ class Branch;
 class LookingState : public BirdState
 {
 public:
-    LookingState() : BirdState(0){}
+    LookingState() : BirdState(0), elapsedTurns_(0) {}
     
     virtual void update(Bird& bird);
     void lookForMate(Bird& bird);
+    void getMated(Bird& bird);
+private:
+    int elapsedTurns_;
 };
 
 //--------------------------------------------------------------
 class MatingState : public BirdState
 {
 public:
-    MatingState() : BirdState(1){}
+    MatingState(std::shared_ptr<Bird> partner) : BirdState(1), partner_(partner){}
     
     virtual void update(Bird& bird);
+    void spawnChild();
+    
+private:
+    std::shared_ptr<Bird> partner_;
 };
 
 //--------------------------------------------------------------

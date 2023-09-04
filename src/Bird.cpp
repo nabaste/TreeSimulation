@@ -29,4 +29,5 @@ void Bird::grow(){
 
 void Bird::eat(){
     branch_->looseLife(BIRD_FOOD_CONSUMPTION);
+    life_ += BIRD_LIFE_GROWTH;
 }

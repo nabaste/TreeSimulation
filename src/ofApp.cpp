@@ -1,5 +1,6 @@
 #include "ofApp.h"
-
+#include <stdlib.h>
+#include <time.h>
 
 ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0), branchGrowthPerTurn_(0) {
     
@@ -33,7 +34,7 @@ void ofApp::setup(){
     
     //-------- INITIAL BIRDS CREATION
     for(int i=0; i<STARTING_BIRDS; i++){
-        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getLiveliestBranch());
+        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getRandomViableBranch(i));
         aliveEntities_.push_back(birdPtr);
     }
     
@@ -67,7 +68,7 @@ void ofApp::draw(){
     std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
         glm::vec3 screenPos = e->position * glm::vec3(ofGetWidth(), ofGetHeight(), 0);
         ofDrawRectangle(screenPos, 10, 10);
-        std:cout << "Bird number " << e->id() << " has a life of " << e->life() << std::endl;
+        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << ")" << " has a life of " << e->life() << " and is in state " << e->getState() <<std::endl;
     });
     
 
@@ -129,7 +130,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 }
 
 //--------------------------------------------------------------
-int ofApp::getAliveBranchAmount() {
+int ofApp::getAliveBranchAmount() { //we could delete this and just use getBranches().size()
     int branchCount = 0;
     for (const auto& entityPtr : aliveEntities_) {
         // Check if the dynamic type of the object pointed to by entityPtr is Branch
@@ -166,6 +167,24 @@ std::shared_ptr<Branch> ofApp::getLiveliestBranch(){
         }
     }
     return result;
+}
+
+std::shared_ptr<Branch> ofApp::getRandomViableBranch(int seed){
+    int ba = getAliveBranchAmount();
+    srand (seed);
+    int randomPick = rand() % ba;
+    
+    std::shared_ptr<Branch> result = nullptr;
+    
+    for (auto& entityPtr : aliveEntities_) {
+        if (auto branchPtr = std::dynamic_pointer_cast<Branch>(entityPtr)) {
+           // if (!result || branchPtr->life() > BRANCH_VIABLE_LIFE) {              //maybe I should implement this
+            if( branchPtr->id() == randomPick){
+                return branchPtr;
+            }
+        }
+    }
+    return result; //Add alarm here! this shouldn't happen
 }
 
 std::list<shared_ptr<Branch>> ofApp::getBranches(){
