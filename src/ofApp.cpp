@@ -34,9 +34,10 @@ void ofApp::setup(){
     
     //-------- INITIAL BIRDS CREATION
     for(int i=0; i<STARTING_BIRDS; i++){
-        BirdState* newState = new LookingState();
-        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getRandomViableBranch(i), newState, STARTING_BIRDS_AGE);
+        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getRandomViableBranch(i), 0, STARTING_BIRDS_AGE);
         aliveEntities_.push_back(birdPtr);
+        std::shared_ptr<BirdState> initState = std::make_shared<LookingState>(birdPtr);
+        birdPtr->setState(initState);
     }
     
 }

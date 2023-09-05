@@ -13,7 +13,7 @@
 #include "Constants.h"
 #include "ofMain.h"
 
-class Entity{
+class Entity {
   
 public:
     Entity(float life) : id_(0), life_(life), position(0.5), markedForDeath(false) {}

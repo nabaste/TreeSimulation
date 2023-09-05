@@ -11,19 +11,24 @@ Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch): Entity(BIRD_STARTING_L
 {
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
-    state_ = new GrowingState();
+    //state_ = std::make_shared<GrowingState>(getObjectSharedPtr());
+    state_==nullptr;
     position = branch_->position;
 }
 
-Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, BirdState* state, int age) :
-Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), branch_(branch), state_(state), age_(age){
+Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, int state, int age) :
+Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), branch_(branch), age_(age){
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
+    //if(state == 0){
+        //std::shared_ptr<BirdState> newState = std::make_shared<LookingState>(getObjectSharedPtr());
+        state_ = nullptr;
+    //}
 }
 
 void Bird::update(){
     grow();
-    state_->update(*this);
+    state_->update();
     position = branch_->position;
 }
 
@@ -40,51 +45,51 @@ void Bird::eat(){
 }
 
 void Bird::onBranchDeath(){
-    int status = state_->id();
-
-    switch (status) {
-        case 0:
-        case 1:
-        case 2:
-        case 3: {
-            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
-            BirdState* nextStatePtr = new LookingState();
-            BirdState* newStatePtr = new MovingState(*this , nextStatePtr, destination);
-            setState(newStatePtr);
-            break;
-        }
-        case 4:{
-            die();
-            break;
-        }
-        case 5:{
-            MovingState* movingState = dynamic_cast<MovingState*>(state_);
-            if (movingState) {
-                movingState->recheckDestination();
-            }
-            break;
-        }
-        default:
-            //maybe it should be the first one.
-            break;
-    }
+//    int status = state_->id();
+//
+//    switch (status) {
+//        case 0: //looking
+//        case 1: //waiting
+//        case 2: //mating
+//        case 3: { //raising
+//            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
+//            std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>(std::make_shared<Bird>(this));
+//            std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(std::make_shared<Bird>(this) , nextStatePtr, destination);
+//            setState(newStatePtr);
+//            break;
+//        }
+//        case 4:{ //growing
+//            die();
+//            break;
+//        }
+//        case 5:{ //moving
+//            std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(state_);
+//            if (movingState) {
+//                movingState->recheckDestination();
+//            }
+//            break;
+//        }
+//        default:
+//            //maybe it should be the first one.
+//            break;
+//    }
 }
 
 void Bird::die(){
     markedForDeath = true;
     switch(state_->id()){
         case 0: //looking
-        case 3: //growing
-        case 4: //waiting
+        case 1: //waiting
+        case 4: //growing
         case 5: { //moving
             //siga siga
             break;
         }
-        case 1:{ //mating
+        case 2:{ //mating
             
             break;
         }
-        case 2: {//raising
+        case 3: {//raising
             
             break;
         }
@@ -99,7 +104,7 @@ void Bird::refreshPosition(){
         position = branch_->position;
     }
     else {
-        MovingState* movingState = dynamic_cast<MovingState*>(state_);
+        std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(state_);
         if (movingState) {
             movingState->recheckDestination();
         }

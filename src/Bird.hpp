@@ -24,16 +24,17 @@ class Bird : public Entity {
 public:
     
     Bird(ofApp& ofApp, std::shared_ptr<Branch> branch);
-    Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, BirdState* state, int age);
+    Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, int state, int age);
 
     // Getters && Setters
     int age() const { return age_; }
     bool isMale() const { return isMale_; }
     std::shared_ptr<Branch> branch() { return branch_; }
     ofApp& getOfApp() { return ofApp_; }
-    BirdState* getState() {  return state_; }
-    void setState(BirdState* state) { state_ = state; }
+    std::shared_ptr<BirdState> getState() {  return state_; }
+    void setState(std::shared_ptr<BirdState> state) { state_ = state; }
     void setBranch(std::shared_ptr<Branch> branch) { branch_ = branch; }
+    //std::shared_ptr<Bird> getObjectSharedPtr() { return shared_from_this(); }
     
     // Simulation
     virtual void update() override;
@@ -52,7 +53,7 @@ private:
     ofApp& ofApp_;
     
     std::shared_ptr<Branch> branch_;
-    BirdState* state_;
+    std::shared_ptr<BirdState> state_;
 };
 
 #endif /* Bird_hpp */

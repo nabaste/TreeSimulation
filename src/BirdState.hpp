@@ -9,20 +9,23 @@
 #define BirdState_hpp
 
 #include <stdio.h>
+#include <iostream>
 //#include "Bird.hpp"
 class Bird;
 
 class BirdState
 {
 public:
-    BirdState(int id) : id_(id) {}
+    BirdState(int id, std::shared_ptr<Bird> bird) : id_(id), bird_(bird) {}
     virtual ~BirdState() {}
-    virtual void update(Bird& bird) {}
-    virtual void lateUpdate(Bird& bird) {}
+    virtual void update() {}
+    virtual void lateUpdate() {}
     int id() {return id_; }
     
-private:
+    
+protected:
     int id_;
+    std::shared_ptr<Bird> bird_;
 };
 
 #endif /* BirdState_hpp */
