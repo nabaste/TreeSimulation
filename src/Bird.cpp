@@ -59,10 +59,10 @@ void Bird::onBranchDeath(){
         }
         case 5:{
             MovingState* movingState = dynamic_cast<MovingState*>(state_);
-                        if (movingState) {
-                            movingState->recheckDestination();
-                        }
-                break;
+            if (movingState) {
+                movingState->recheckDestination();
+            }
+            break;
         }
         default:
             //maybe it should be the first one.
@@ -70,6 +70,38 @@ void Bird::onBranchDeath(){
     }
 }
 
+void Bird::die(){
+    markedForDeath = true;
+    switch(state_->id()){
+        case 0: //looking
+        case 3: //growing
+        case 4: //waiting
+        case 5: { //moving
+            //siga siga
+            break;
+        }
+        case 1:{ //mating
+            
+            break;
+        }
+        case 2: {//raising
+            
+            break;
+        }
+        default:
+            break;
+        
+    }
+}
+
 void Bird::refreshPosition(){
-    position = branch_->position;
+    if(state_->id() != 5){
+        position = branch_->position;
+    }
+    else {
+        MovingState* movingState = dynamic_cast<MovingState*>(state_);
+        if (movingState) {
+            movingState->recheckDestination();
+        }
+    }
 }

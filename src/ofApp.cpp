@@ -8,14 +8,14 @@ ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0), branchGrowthPerTu
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-    ofBackground(23,56,35);
+    ofBackground(23,28,35);
     ofEnableSmoothing();
     ofEnableAlphaBlending();
     ofSetWindowTitle("Tree System");
         
     ofSetRectMode(OF_RECTMODE_CENTER);
         
-    ofSetFrameRate(30);
+    ofSetFrameRate(24);
         
     float middleW = ofGetWidth()/2;
     float middleH = ofGetHeight()/2;

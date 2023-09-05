@@ -57,38 +57,9 @@ void LookingState::lookForMate(Bird& bird){
     }
 }
 
-
 //----------------------------------------------------------------------------------------------------
-MovingState::MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination):
-BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), elapsedTurns_(0) {
-    
-    glm::vec3 travel = destination->position - bird.position;
-    travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
-    glm::vec3 mpt{(destination->position.x - bird.position.x)/travelDuration_, (destination->position.y - bird.position.y)/travelDuration_, 0} ;
-    movementPerTurn_ = mpt;
-}
-
-void MovingState::update(Bird& bird){
-    bird.position += movementPerTurn_;
-    elapsedTurns_++;
-    if (elapsedTurns_ == travelDuration_){
-        bird.setBranch(destination_);
-        bird.position = destination_->position;
-        BirdState* newStatePtr = nextState_;
-        bird.setState(newStatePtr);
-    }
-}
-
-void MovingState::recheckDestination(){
-    if(destination_->markedForDeath){
-        destination_ = bird_.getOfApp().getRandomViableBranch(bird_.id());
-        elapsedTurns_ = 0;
-        
-        glm::vec3 travel = destination_->position - bird_.position;
-        travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
-        glm::vec3 mpt{(destination_->position.x - bird_.position.x)/travelDuration_, (destination_->position.y - bird_.position.y)/travelDuration_, 0} ;
-        movementPerTurn_ = mpt;
-    }
+void WaitingForMateState::update(Bird& bird){
+    bird.eat();
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -136,7 +107,44 @@ void GrowingState::update(Bird& bird){
     }
 }
 
+
 //----------------------------------------------------------------------------------------------------
-void WaitingForMateState::update(Bird& bird){
-    bird.eat();
+MovingState::MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination):
+BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), elapsedTurns_(0) {
+    
+    glm::vec3 travel = destination->position - bird.position;
+    travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
+    glm::vec3 mpt{(destination->position.x - bird.position.x)/travelDuration_, (destination->position.y - bird.position.y)/travelDuration_, 0} ;
+    movementPerTurn_ = mpt;
+}
+
+void MovingState::update(Bird& bird){
+    bird.position += movementPerTurn_;
+    elapsedTurns_++;
+    if (elapsedTurns_ == travelDuration_){
+        bird.setBranch(destination_);
+        bird.position = destination_->position;
+        BirdState* newStatePtr = nextState_;
+        bird.setState(newStatePtr);
+    }
+}
+
+void MovingState::recheckDestination(){
+    if(destination_->markedForDeath){
+        destination_ = bird_.getOfApp().getRandomViableBranch(bird_.id());
+        elapsedTurns_ = 0;
+        
+        glm::vec3 travel = destination_->position - bird_.position;
+        travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
+        glm::vec3 mpt{(destination_->position.x - bird_.position.x)/travelDuration_, (destination_->position.y - bird_.position.y)/travelDuration_, 0} ;
+        movementPerTurn_ = mpt;
+    }
+    else{ //in case the branch has relocated // Should branches relocate?
+        elapsedTurns_ = 0;
+        
+        glm::vec3 travel = destination_->position - bird_.position;
+        travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
+        glm::vec3 mpt{(destination_->position.x - bird_.position.x)/travelDuration_, (destination_->position.y - bird_.position.y)/travelDuration_, 0} ;
+        movementPerTurn_ = mpt;
+    }
 }

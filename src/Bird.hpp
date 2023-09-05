@@ -36,10 +36,11 @@ public:
     void setBranch(std::shared_ptr<Branch> branch) { branch_ = branch; }
     
     // Simulation
-    virtual void update();
+    virtual void update() override;
     void grow();
     void eat();
     void onBranchDeath();
+    void die() override;
     
     // Render
     void refreshPosition();
