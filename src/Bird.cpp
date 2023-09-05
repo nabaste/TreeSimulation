@@ -80,22 +80,21 @@ void Bird::die(){
     switch(state_->id()){
         case 0: //looking
         case 1: //waiting
+        case 3: //raising
         case 4: //growing
         case 5: { //moving
             //siga siga
             break;
         }
         case 2:{ //mating
-            
-            break;
-        }
-        case 3: {//raising
-            
+            std::shared_ptr<MatingState> matingState = std::dynamic_pointer_cast<MatingState>(state_);
+            if (matingState) {
+                matingState->onPartnerDeath();
+            }
             break;
         }
         default:
             break;
-        
     }
 }
 

@@ -32,9 +32,12 @@ private:
 class WaitingForMateState : public BirdState
 {
 public:
-    WaitingForMateState(std::shared_ptr<Bird> bird) : BirdState(1, bird) {}
+    WaitingForMateState(std::shared_ptr<Bird> bird) : BirdState(1, bird), elapsedTurns_(0) {}
     
     virtual void update();
+    
+private:
+    int elapsedTurns_;
 };
 
 //--------------------------------------------------------------
@@ -45,6 +48,7 @@ public:
     
     virtual void update();
     void spawnChild();
+    void onPartnerDeath();
     
 private:
     std::shared_ptr<Bird> partner_;
@@ -67,12 +71,13 @@ private:
 class GrowingState : public BirdState
 {
 public:
-    GrowingState(std::shared_ptr<Bird> bird) : BirdState(4, bird), elapsedTurns_(0) {}
+    GrowingState(std::shared_ptr<Bird> bird) : BirdState(4, bird), turnsWithoutEating_(0), previousLife_(1) {}
     
     virtual void update();
     
 private:
-    int elapsedTurns_;
+    int turnsWithoutEating_;
+    float previousLife_;
 };
 
 //--------------------------------------------------------------

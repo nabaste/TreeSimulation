@@ -11,7 +11,7 @@ class Bird;
 
 void LookingState::update() {
     bird_->eat();
-    if (elapsedTurns_ >= BIRD_TURNS_WAITING_FOR_MATE){
+    if (elapsedTurns_ >= BIRD_TURNS_LOOKING_FOR_MATE){
         std::shared_ptr<Branch> destination = bird_->getOfApp().getRandomViableBranch(bird_->id());
         std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>(bird_);
         std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(bird_ , nextStatePtr, destination);
@@ -60,6 +60,11 @@ void LookingState::lookForMate(){
 //----------------------------------------------------------------------------------------------------
 void WaitingForMateState::update(){
     bird_->eat();
+    elapsedTurns_++;
+    if(elapsedTurns_ > BIRD_TURNS_WAITING_FOR_MATE){
+        std::shared_ptr<BirdState> newState = std::make_shared<LookingState>(bird_);
+        bird_->setState(newState);
+    }
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -70,7 +75,10 @@ void MatingState::update(){
         if(rand() % 2){ //50% chance to keep spawning or start raising
             std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>(bird_, children_);
             bird_->setState(newState);
-            partner_->setState(newState);
+            if(partner_ != nullptr){
+                partner_->setState(newState);
+
+            }
         }
     }
 }
@@ -83,6 +91,9 @@ void MatingState::spawnChild(){
     birdPtr->setState(initState);
 }
 
+void MatingState::onPartnerDeath(){
+    partner_=nullptr;
+}
 //----------------------------------------------------------------------------------------------------
 void RaisingState::update(){
     bird_->eat();
@@ -106,6 +117,14 @@ void GrowingState::update(){
     if( bird_->age() >= BIRD_INFANCY_PERCENTAGE * BIRD_LIFE_EXPECTANCY ){
         std::shared_ptr<BirdState> newState = std::make_shared<LookingState>(bird_);
         bird_->setState(newState);
+    }
+    if( bird_->life() == previousLife_ ){
+        turnsWithoutEating_++;
+    } else {
+        turnsWithoutEating_ = 0;
+    }
+    if (turnsWithoutEating_ > 4 ){
+        bird_->die();
     }
 }
 
