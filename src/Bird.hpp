@@ -39,6 +39,7 @@ public:
     virtual void update();
     void grow();
     void eat();
+    void onBranchDeath();
     
     // Render
     void refreshPosition();

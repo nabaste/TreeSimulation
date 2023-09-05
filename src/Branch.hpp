@@ -23,11 +23,13 @@ public:
     void addChild(std::shared_ptr<Branch> child);
     void setParent(std::shared_ptr<Branch> parent) { parent_ = parent; }
     
+    //simulation
     virtual void update();
     void grow();
     void spawnChild();
     void looseLife(float amount);
     void removeDeadChildren();
+    void die() override;
     
     //render
     void relocateChildren();

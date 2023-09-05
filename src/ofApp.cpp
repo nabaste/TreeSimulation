@@ -179,7 +179,7 @@ std::shared_ptr<Branch> ofApp::getRandomViableBranch(int seed){
     
     for (auto& entityPtr : aliveEntities_) {
         if (auto branchPtr = std::dynamic_pointer_cast<Branch>(entityPtr)) {
-           // if (!result || branchPtr->life() > BRANCH_VIABLE_LIFE) {              //maybe I should implement this
+           // if (!result || branchPtr->life() > BRANCH_VIABLE_LIFE) {              // I should implement this, also check if it is not marked for death
             if( branchPtr->id() == randomPick){
                 return branchPtr;
             }

@@ -24,7 +24,7 @@ public:
     float life() const { return life_; }
     
     virtual void update() = 0;
-    void die();
+    virtual void die();
     
     bool markedForDeath;
     glm::vec3 position;

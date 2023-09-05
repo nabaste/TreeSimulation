@@ -45,11 +45,7 @@ void Branch::looseLife(float amount){
     life_ -= amount;
     if( life_ <0 ){
         die();
-        std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
         
-        //tell birds to move elsewhere
-        removeDeadChildren();
-        parent_->removeDeadChildren();
     }
 }
 
@@ -60,6 +56,19 @@ void Branch::removeDeadChildren()
                     children_.end());
 }
 
+void Branch:: die() {
+    markedForDeath = true;
+    std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
+    
+    for(const auto& p : ofApp_.getBirds()){
+        if(p->branch()->id() == id_){
+            p->onBranchDeath();
+        }
+    }
+    
+    removeDeadChildren();
+    parent_->removeDeadChildren();   //If my parent is dead as well, shouldn't I remove this pointer?
+}
 void Branch::relocateChildren()
 {
     float separation = 0.15 * exp(-0.5 * stepsFromRoot_);
