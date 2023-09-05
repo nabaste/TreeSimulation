@@ -79,6 +79,18 @@ void MovingState::update(Bird& bird){
     }
 }
 
+void MovingState::recheckDestination(){
+    if(destination_->markedForDeath){
+        destination_ = bird_.getOfApp().getRandomViableBranch(bird_.id());
+        elapsedTurns_ = 0;
+        
+        glm::vec3 travel = destination_->position - bird_.position;
+        travelDuration_ = (int)(travel.length() / BIRD_DISTANCE_TRAVELLED_PER_TURN);
+        glm::vec3 mpt{(destination_->position.x - bird_.position.x)/travelDuration_, (destination_->position.y - bird_.position.y)/travelDuration_, 0} ;
+        movementPerTurn_ = mpt;
+    }
+}
+
 //----------------------------------------------------------------------------------------------------
 void MatingState::update(Bird& bird){
     bird.eat();

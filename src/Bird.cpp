@@ -40,31 +40,34 @@ void Bird::eat(){
 }
 
 void Bird::onBranchDeath(){
-//    int status = getState();
-//    
-//    switch (status) {
-//        case 0:
-//        case 1:
-//        case 2:
-//        case 3: {
-//            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
-//            BirdState* nextStatePtr = new LookingState();
-//            BirdState* newStatePtr = new MovingState(*this , nextStatePtr, destination);
-//            setState(newStatePtr);
-//            break;
-//        }
-//        case 4:{
-//            die();
-//            break;
-//        }
-//        case 5:{
-//            //??????
-//                break;
-//        }
-//        default:
-//            //maybe it should be the first one.
-//            break;
-//    }
+    int status = state_->id();
+
+    switch (status) {
+        case 0:
+        case 1:
+        case 2:
+        case 3: {
+            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
+            BirdState* nextStatePtr = new LookingState();
+            BirdState* newStatePtr = new MovingState(*this , nextStatePtr, destination);
+            setState(newStatePtr);
+            break;
+        }
+        case 4:{
+            die();
+            break;
+        }
+        case 5:{
+            MovingState* movingState = dynamic_cast<MovingState*>(state_);
+                        if (movingState) {
+                            movingState->recheckDestination();
+                        }
+                break;
+        }
+        default:
+            //maybe it should be the first one.
+            break;
+    }
 }
 
 void Bird::refreshPosition(){

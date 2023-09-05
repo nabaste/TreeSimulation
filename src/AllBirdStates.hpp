@@ -81,6 +81,7 @@ public:
     MovingState(Bird& bird, BirdState* nextState, std::shared_ptr<Branch> destination);
     
     virtual void update(Bird& bird);
+    void recheckDestination();
     
 private:
     Bird& bird_;
