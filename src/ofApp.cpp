@@ -69,7 +69,7 @@ void ofApp::draw(){
     std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
         glm::vec3 screenPos = e->position * glm::vec3(ofGetWidth(), ofGetHeight(), 0);
         ofDrawRectangle(screenPos, 10, 10);
-        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << ")" << " has a life of " << e->life() << " and is in state " << e->getState() <<std::endl;
+        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << ")" << " has a life of " << e->life() << " and is in state " << e->getState()->id() <<std::endl;
     });
     
 

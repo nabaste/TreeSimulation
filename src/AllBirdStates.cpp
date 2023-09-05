@@ -29,21 +29,21 @@ void LookingState::lookForMate(Bird& bird){
     for(const auto& p : bird.getOfApp().getBirds()){
         if (p->id() == bird.id()) return;
         if (p->life() > BIRD_MATING_POINT && bird.isMale() != p->isMale()){
-            if( bird.branch()->id() == p->branch()->id() && p->getState() == 4){
+            if( bird.branch()->id() == p->branch()->id() && p->getState()->id() == 4){
                 BirdState* newStatePtr = new MatingState(p);
                 BirdState* newStateForPartner = new MatingState(std::make_shared<Bird>(bird));
                 bird.setState(newStatePtr);
                 p->setState(newStatePtr);
                 return;
             }
-            else if (bird.branch()->id() == p->branch()->id() && p->getState() == 0){
+            else if (bird.branch()->id() == p->branch()->id() && p->getState()->id() == 0){
                 BirdState* newStatePtr = new MatingState(p);
                 BirdState* newStateForPartner = new MatingState(std::make_shared<Bird>(bird));
                 bird.setState(newStatePtr);
                 p->setState(newStatePtr);
                 return;
             }
-            else if (bird.branch()->id() != p->branch()->id() && p->getState() == 0){
+            else if (bird.branch()->id() != p->branch()->id() && p->getState()->id() == 0){
                 BirdState* nextStatePtr = new LookingState();
                 BirdState* newStatePtr = new MovingState(bird, nextStatePtr, p->branch());
                 bird.setState(newStatePtr);
@@ -105,7 +105,7 @@ void RaisingState::update(Bird& bird){
     
     int childrenLeft = 0;
     for(const auto& p : children_){
-        if( p->getState() == 3){
+        if( p->getState()->id() == 3){
             p->eat();
             childrenLeft++;
         }

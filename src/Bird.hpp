@@ -31,7 +31,7 @@ public:
     bool isMale() const { return isMale_; }
     std::shared_ptr<Branch> branch() { return branch_; }
     ofApp& getOfApp() { return ofApp_; }
-    int getState() {  return state_->id(); }
+    BirdState* getState() {  return state_; }
     void setState(BirdState* state) { state_ = state; }
     void setBranch(std::shared_ptr<Branch> branch) { branch_ = branch; }
     
