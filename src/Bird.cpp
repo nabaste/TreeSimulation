@@ -11,24 +11,25 @@ Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch): Entity(BIRD_STARTING_L
 {
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
-    //state_ = std::make_shared<GrowingState>(getObjectSharedPtr());
-    state_==nullptr;
+    state_ = std::make_shared<GrowingState>();
+    //state_==nullptr;
     position = branch_->position;
 }
 
-Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, int state, int age) :
-Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), branch_(branch), age_(age){
+Bird::Bird(ofApp& ofApp, std::shared_ptr<Branch> branch, std::shared_ptr<BirdState> state, int age) :
+Entity(BIRD_STARTING_LIFE), ofApp_(ofApp), branch_(branch), state_(state), age_(age){
     id_ = ofApp.getNewBirdId();
     isMale_ = rand() % 2;
     //if(state == 0){
         //std::shared_ptr<BirdState> newState = std::make_shared<LookingState>(getObjectSharedPtr());
-        state_ = nullptr;
+        //state_ = nullptr;
     //}
 }
 
-void Bird::update(){
+void Bird::update(std::shared_ptr<Entity> e){
     grow();
-    state_->update();
+    std::shared_ptr<Bird> bird_ = std::dynamic_pointer_cast<Bird>( e );
+    state_->update(bird_);
     position = branch_->position;
 }
 
@@ -50,11 +51,11 @@ void Bird::onBranchDeath(){
 //    switch (status) {
 //        case 0: //looking
 //        case 1: //waiting
-//        case 2: //mating
+//        case 2:
 //        case 3: { //raising
 //            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
-//            std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>(std::make_shared<Bird>(this));
-//            std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(std::make_shared<Bird>(this) , nextStatePtr, destination);
+//            std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
+//            std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(std::make_shared<Bird>(this), nextStatePtr, destination); //MMMMM
 //            setState(newStatePtr);
 //            break;
 //        }

@@ -24,7 +24,7 @@ public:
     void setParent(std::shared_ptr<Branch> parent) { parent_ = parent; }
     
     //simulation
-    virtual void update() override;
+    virtual void update(std::shared_ptr<Entity> e) override;
     void grow();
     void spawnChild();
     void looseLife(float amount);

@@ -16,16 +16,15 @@ class Bird;
 class BirdState
 {
 public:
-    BirdState(int id, std::shared_ptr<Bird> bird) : id_(id), bird_(bird) {}
+    BirdState(int id) : id_(id) {}
     virtual ~BirdState() {}
-    virtual void update() {}
+    virtual void update(std::shared_ptr<Bird> bird_) {}
     virtual void lateUpdate() {}
     int id() {return id_; }
     
     
 protected:
     int id_;
-    std::shared_ptr<Bird> bird_;
 };
 
 #endif /* BirdState_hpp */

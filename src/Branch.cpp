@@ -19,7 +19,7 @@ void Branch::addChild(std::shared_ptr<Branch> child){
     
 }
 
-void Branch::update(){
+void Branch::update(std::shared_ptr<Entity> e){
     grow();
     if (life_ > BRANCH_GROWTH_POINT)
       {

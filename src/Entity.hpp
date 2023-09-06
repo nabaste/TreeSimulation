@@ -23,7 +23,7 @@ public:
     int id() const { return id_; }
     float life() const { return life_; }
     
-    virtual void update() = 0;
+    virtual void update(std::shared_ptr<Entity> e) = 0;
     virtual void die();
     
     bool markedForDeath;

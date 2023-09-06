@@ -34,10 +34,9 @@ void ofApp::setup(){
     
     //-------- INITIAL BIRDS CREATION
     for(int i=0; i<STARTING_BIRDS; i++){
-        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getRandomViableBranch(i), 0, STARTING_BIRDS_AGE);
+        std::shared_ptr<BirdState> initState = std::make_shared<LookingState>();
+        std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(*this, getRandomViableBranch(i), initState, STARTING_BIRDS_AGE);
         aliveEntities_.push_back(birdPtr);
-        std::shared_ptr<BirdState> initState = std::make_shared<LookingState>(birdPtr);
-        birdPtr->setState(initState);
     }
     
 }
@@ -48,7 +47,7 @@ void ofApp::update(){
     std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [this](std::shared_ptr<Entity>& e) {
         branchGrowthPerTurn_ = TREE_GROWTH / getAliveBranchAmount();
         //this is not yet working as inteded for some reason. each time a new branch grows, the rest should immediately grow less
-        e->update();
+        e->update(e);
     });
 }
 

@@ -18,10 +18,10 @@ class Branch;
 class LookingState : public BirdState
 {
 public:
-    LookingState(std::shared_ptr<Bird> bird) : BirdState(0, bird), elapsedTurns_(0) {} //Ya se, podria hacer un enum
+    LookingState() : BirdState(0), elapsedTurns_(0) {} //Ya se, podria hacer un enum
     
-    virtual void update();
-    void lookForMate();
+    virtual void update(std::shared_ptr<Bird> bird_);
+    void lookForMate(std::shared_ptr<Bird> bird_);
     void getMated();
     
 private:
@@ -32,9 +32,9 @@ private:
 class WaitingForMateState : public BirdState
 {
 public:
-    WaitingForMateState(std::shared_ptr<Bird> bird) : BirdState(1, bird), elapsedTurns_(0) {}
+    WaitingForMateState() : BirdState(1), elapsedTurns_(0) {}
     
-    virtual void update();
+    virtual void update(std::shared_ptr<Bird> bird_);
     
 private:
     int elapsedTurns_;
@@ -44,10 +44,10 @@ private:
 class MatingState : public BirdState
 {
 public:
-    MatingState(std::shared_ptr<Bird> bird, std::shared_ptr<Bird> partner) : BirdState(2, bird), partner_(partner){}
+    MatingState(std::shared_ptr<Bird> partner) : BirdState(2), partner_(partner){}
     
-    virtual void update();
-    void spawnChild();
+    virtual void update(std::shared_ptr<Bird> bird_);
+    void spawnChild(std::shared_ptr<Bird> bird_);
     void onPartnerDeath();
     
 private:
@@ -59,9 +59,9 @@ private:
 class RaisingState : public BirdState
 {
 public:
-    RaisingState(std::shared_ptr<Bird> bird, std::list<shared_ptr<Bird>> children) : BirdState(3, bird), elapsedTurns_(0), children_(children) {}
+    RaisingState(std::list<shared_ptr<Bird>> children) : BirdState(3), elapsedTurns_(0), children_(children) {}
     
-    virtual void update();
+    virtual void update(std::shared_ptr<Bird> bird_);
 private:
     int elapsedTurns_;
     std::list<shared_ptr<Bird>> children_;
@@ -71,9 +71,9 @@ private:
 class GrowingState : public BirdState
 {
 public:
-    GrowingState(std::shared_ptr<Bird> bird) : BirdState(4, bird), turnsWithoutEating_(0), previousLife_(1) {}
+    GrowingState() : BirdState(4), turnsWithoutEating_(0), previousLife_(1) {}
     
-    virtual void update();
+    virtual void update(std::shared_ptr<Bird> bird_);
     
 private:
     int turnsWithoutEating_;
@@ -86,7 +86,7 @@ class MovingState : public BirdState
 public:
     MovingState(std::shared_ptr<Bird> bird, std::shared_ptr<BirdState> nextState, std::shared_ptr<Branch> destination);
     
-    virtual void update();
+    virtual void update(std::shared_ptr<Bird> bird_);
     void recheckDestination();
     
 private:
@@ -95,6 +95,7 @@ private:
     int elapsedTurns_;
     int travelDuration_;
     glm::vec3 movementPerTurn_;
+    std::shared_ptr<Bird> bird_;
     
 };
 #endif /* AllBirdStates_hpp */
