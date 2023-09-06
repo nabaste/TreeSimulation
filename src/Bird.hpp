@@ -40,7 +40,7 @@ public:
     virtual void update(std::shared_ptr<Entity> e) override;
     void grow();
     void eat();
-    void onBranchDeath();
+    void onBranchDeath(std::shared_ptr<Bird> birdPtr);
     void die() override;
     
     // Render

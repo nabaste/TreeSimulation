@@ -45,35 +45,35 @@ void Bird::eat(){
     life_ += BIRD_LIFE_GROWTH;
 }
 
-void Bird::onBranchDeath(){
-//    int status = state_->id();
-//
-//    switch (status) {
-//        case 0: //looking
-//        case 1: //waiting
-//        case 2:
-//        case 3: { //raising
-//            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
-//            std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
-//            std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(std::make_shared<Bird>(this), nextStatePtr, destination); //MMMMM
-//            setState(newStatePtr);
-//            break;
-//        }
-//        case 4:{ //growing
-//            die();
-//            break;
-//        }
-//        case 5:{ //moving
-//            std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(state_);
-//            if (movingState) {
-//                movingState->recheckDestination();
-//            }
-//            break;
-//        }
-//        default:
-//            //maybe it should be the first one.
-//            break;
-//    }
+void Bird::onBranchDeath(std::shared_ptr<Bird> birdPtr){
+    int status = state_->id();
+
+    switch (status) {
+        case 0: //looking
+        case 1: //waiting
+        case 2:
+        case 3: { //raising
+            std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
+            std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
+            std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(birdPtr , nextStatePtr, destination); //MMMMM
+            setState(newStatePtr);
+            break;
+        }
+        case 4:{ //growing
+            die();
+            break;
+        }
+        case 5:{ //moving
+            std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(state_);
+            if (movingState) {
+                movingState->recheckDestination();
+            }
+            break;
+        }
+        default:
+            //maybe it should be the first one.
+            break;
+    }
 }
 
 void Bird::die(){

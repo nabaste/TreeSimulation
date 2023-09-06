@@ -62,7 +62,7 @@ void Branch:: die() {
     
     for(const auto& p : ofApp_.getBirds()){
         if(p->branch()->id() == id_){
-            p->onBranchDeath();
+            p->onBranchDeath(p);
         }
     }
     
