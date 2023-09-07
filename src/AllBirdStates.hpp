@@ -87,6 +87,7 @@ public:
     MovingState(std::shared_ptr<Bird> bird, std::shared_ptr<BirdState> nextState, std::shared_ptr<Branch> destination);
     
     virtual void update(std::shared_ptr<Bird> bird_);
+    std::shared_ptr<Branch> destination() { return destination_; };
     void recheckDestination();
     
 private:

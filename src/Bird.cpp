@@ -30,7 +30,7 @@ void Bird::update(std::shared_ptr<Entity> e){
     grow();
     std::shared_ptr<Bird> bird_ = std::dynamic_pointer_cast<Bird>( e );
     state_->update(bird_);
-    position = branch_->position;
+//    position = branch_->position;
 }
 
 void Bird::grow(){

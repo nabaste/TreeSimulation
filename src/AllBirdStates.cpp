@@ -11,13 +11,13 @@ class Bird;
 
 void LookingState::update(std::shared_ptr<Bird> bird_) {
     bird_->eat();
-    if (elapsedTurns_ >= BIRD_TURNS_LOOKING_FOR_MATE){
-        std::shared_ptr<Branch> destination = bird_->getOfApp().getRandomViableBranch(bird_->id());
-        std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
-        std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(bird_ , nextStatePtr, destination);
-        bird_->setState(newStatePtr);
-        elapsedTurns_ = 0;
-    }
+//    if (elapsedTurns_ >= BIRD_TURNS_LOOKING_FOR_MATE){
+//        std::shared_ptr<Branch> destination = bird_->getOfApp().getRandomViableBranch(bird_->id());
+//        std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
+//        std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(bird_ , nextStatePtr, destination);
+//        bird_->setState(newStatePtr);
+//        elapsedTurns_ = 0;
+//    }
     if (bird_->life() > BIRD_MATING_POINT) {
         lookForMate(bird_);
     }
@@ -140,7 +140,8 @@ BirdState(5), bird_(bird), nextState_(nextState), destination_(destination), ela
 }
 
 void MovingState::update(std::shared_ptr<Bird> bird_){
-    bird_->position += movementPerTurn_;
+    glm::vec3 newPos = bird_->position + movementPerTurn_;
+    bird_->position = newPos;
     elapsedTurns_++;
     if (elapsedTurns_ == travelDuration_){
         bird_->setBranch(destination_);
