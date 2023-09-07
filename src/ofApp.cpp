@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include <stdlib.h>
 #include <time.h>
+#include <random>
 
 ofApp::ofApp() : totalBirdCounter_(0), totalBranchCounter_(0), branchGrowthPerTurn_(0) {
     
@@ -171,21 +172,20 @@ std::shared_ptr<Branch> ofApp::getLiveliestBranch(){
 }
 
 std::shared_ptr<Branch> ofApp::getRandomViableBranch(int seed){
-    int ba = getAliveBranchAmount();
-    srand (seed);
-    int randomPick = rand() % ba;
     
-    std::shared_ptr<Branch> result = nullptr;
+    srand(seed);
+    std::vector<std::shared_ptr<Branch>> viableBranches;
     
-    for (auto& entityPtr : aliveEntities_) {
-        if (auto branchPtr = std::dynamic_pointer_cast<Branch>(entityPtr)) {
-           // if (!result || branchPtr->life() > BRANCH_VIABLE_LIFE) {              // I should implement this, also check if it is not marked for death
-            if( branchPtr->id() == randomPick){
-                return branchPtr;
-            }
+    for(auto& branch : getBranches()){
+        if (branch->life() > BRANCH_VIABLE_LIFE && !branch->markedForDeath){
+            viableBranches.push_back(branch);
         }
     }
-    return result; //Add alarm here! this shouldn't happen
+    
+    int pick = rand() % viableBranches.size();
+    
+    return viableBranches[pick];
+    
 }
 
 std::list<shared_ptr<Branch>> ofApp::getBranches(){
