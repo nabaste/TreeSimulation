@@ -67,7 +67,8 @@ void Branch:: die() {
     }
     
     removeDeadChildren();
-    parent_->removeDeadChildren();   //If my parent is dead as well, shouldn't I remove this pointer?
+    parent_->removeDeadChildren();
+    parent_ = nullptr;
 }
 void Branch::relocateChildren()
 {

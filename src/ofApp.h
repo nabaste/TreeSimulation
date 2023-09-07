@@ -44,6 +44,7 @@ public:
         void subscribeAliveEntity(std::shared_ptr<Entity> entity);
         std::shared_ptr<Branch> getLiveliestBranch();
         std::shared_ptr<Branch> getRandomViableBranch(int seed);
+        void removeDeadEntities();
     
     //render
     
@@ -53,5 +54,5 @@ private:
     int totalBranchCounter_;
     float branchGrowthPerTurn_;
     std::list<std::shared_ptr<Entity>> aliveEntities_;
-		
+    int turnNo_;
 };

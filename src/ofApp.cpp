@@ -40,6 +40,8 @@ void ofApp::setup(){
         aliveEntities_.push_back(birdPtr);
     }
     
+    turnNo_ = 0;
+    
 }
 
 //--------------------------------------------------------------
@@ -50,6 +52,10 @@ void ofApp::update(){
         //this is not yet working as inteded for some reason. each time a new branch grows, the rest should immediately grow less
         e->update(e);
     });
+    
+    removeDeadEntities();
+    
+    turnNo_++;
 }
 
 //--------------------------------------------------------------
@@ -57,7 +63,8 @@ void ofApp::draw(){
     std::list<shared_ptr<Branch>> branches = getBranches();
     std::list<shared_ptr<Bird>> birds = getBirds();
     
-    std::cout << "There are " << getAliveBranchAmount() << " branches alive." << std::endl;
+    std::cout << "This is turn " << turnNo_ << std::endl;
+    std::cout << "There are " << branches.size() << " branches alive." << std::endl;
     std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
         std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
         ofColor color1(135 + 40*e->stepsFromRoot(), 234, 54);
@@ -67,12 +74,14 @@ void ofApp::draw(){
     
     ofColor color2(235, 134, 54);
     ofSetColor(color2);
+    
+    std::cout << "There are " << birds.size() << " birds alive." << std::endl;
     std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
         glm::vec3 screenPos = e->position * glm::vec3(ofGetWidth(), ofGetHeight(), 0);
         ofDrawRectangle(screenPos, 10, 10);
-        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << ")" << " has a life of " << e->life() << " and is in state " << e->getState()->id() <<std::endl;
+        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << "-" << e->branch()->id() <<") has a life of " << e->life() << " and is in state " << e->getState()->id() <<std::endl;
     });
-    
+    std::cout << "             "<<std::endl;
 
 }
 
@@ -208,4 +217,11 @@ std::list<shared_ptr<Bird>> ofApp::getBirds(){
         }
     }
     return result;
+}
+
+void ofApp::removeDeadEntities()
+{
+    aliveEntities_.erase(std::remove_if(aliveEntities_.begin(), aliveEntities_.end(),
+                                   [](const std::shared_ptr<Entity>& e) { return e->markedForDeath; }),
+                         aliveEntities_.end());
 }
