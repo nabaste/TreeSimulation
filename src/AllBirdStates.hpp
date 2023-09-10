@@ -62,6 +62,9 @@ public:
     RaisingState(std::list<shared_ptr<Bird>> children) : BirdState(3), elapsedTurns_(0), children_(children) {}
     
     virtual void update(std::shared_ptr<Bird> bird_);
+    void looseChildren();
+    void onChildDeath(int id);
+    
 private:
     int elapsedTurns_;
     std::list<shared_ptr<Bird>> children_;
@@ -74,10 +77,13 @@ public:
     GrowingState() : BirdState(4), turnsWithoutEating_(0), previousLife_(1) {}
     
     virtual void update(std::shared_ptr<Bird> bird_);
+    void addParent(std::shared_ptr<Bird>);
+    void onDeath(int id);
     
 private:
     int turnsWithoutEating_;
     float previousLife_;
+    std::list<shared_ptr<Bird>> parents_;
 };
 
 //--------------------------------------------------------------

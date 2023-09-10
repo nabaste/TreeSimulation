@@ -47,9 +47,17 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [this](std::shared_ptr<Entity>& e) {
-        branchGrowthPerTurn_ = TREE_GROWTH / getAliveBranchAmount();
-        //this is not yet working as inteded for some reason. each time a new branch grows, the rest should immediately grow less
+    std::list<shared_ptr<Branch>> branches = getBranches();
+    std::list<shared_ptr<Bird>> birds = getBirds();
+    branchGrowthPerTurn_ = TREE_GROWTH / branches.size();
+
+//    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [this](std::shared_ptr<Entity>& e) {
+//        e->update(e);
+//    });
+    std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
+        e->update(e);
+    });
+    std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
         e->update(e);
     });
     

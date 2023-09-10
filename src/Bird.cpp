@@ -30,7 +30,6 @@ void Bird::update(std::shared_ptr<Entity> e){
     grow();
     std::shared_ptr<Bird> bird_ = std::dynamic_pointer_cast<Bird>( e );
     state_->update(bird_);
-//    position = branch_->position;
 }
 
 void Bird::grow(){
@@ -51,13 +50,22 @@ void Bird::onBranchDeath(std::shared_ptr<Bird> birdPtr){
     switch (status) {
         case 0: //looking
         case 1: //waiting
-        case 2:
-        case 3: { //raising
+        case 2: {
             std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
             std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
             std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(birdPtr , nextStatePtr, destination); //MMMMM
             setState(newStatePtr);
             break;
+        }
+        case 3: { //raising
+            std::shared_ptr<RaisingState> raisingState = std::dynamic_pointer_cast<RaisingState>(state_);
+            if(raisingState) {
+                raisingState->looseChildren();
+                std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
+                std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
+                std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(birdPtr , nextStatePtr, destination);
+                setState(newStatePtr);
+            }
         }
         case 4:{ //growing
             die();
@@ -82,7 +90,6 @@ void Bird::die(){
         case 0: //looking
         case 1: //waiting
         case 3: //raising
-        case 4: //growing
         case 5: { //moving
             //siga siga
             break;
@@ -93,6 +100,13 @@ void Bird::die(){
                 matingState->onPartnerDeath();
             }
             break;
+        }
+            
+        case 4: {
+            std::shared_ptr<GrowingState> growingState = std::dynamic_pointer_cast<GrowingState>(state_);
+            if (growingState) {
+                growingState->onDeath(id_);
+            }
         }
         default:
             break;
