@@ -60,7 +60,7 @@ void Bird::onBranchDeath(std::shared_ptr<Bird> birdPtr){
         case 3: { //raising
             std::shared_ptr<RaisingState> raisingState = std::dynamic_pointer_cast<RaisingState>(state_);
             if(raisingState) {
-                raisingState->looseChildren();
+//                raisingState->looseChildren();
                 std::shared_ptr<Branch> destination = ofApp_.getRandomViableBranch(id_);
                 std::shared_ptr<BirdState> nextStatePtr = std::make_shared<LookingState>();
                 std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(birdPtr , nextStatePtr, destination);
@@ -90,8 +90,10 @@ void Bird::die(){
         case 0: //looking
         case 1: //waiting
         case 3: //raising
+        case 4:
         case 5: { //moving
-            //siga siga
+            std::shared_ptr<BirdState> newStatePtr = std::make_shared<DyingState>();
+            setState(newStatePtr);
             break;
         }
         case 2:{ //mating
@@ -99,15 +101,18 @@ void Bird::die(){
             if (matingState) {
                 matingState->onPartnerDeath();
             }
+            
+            std::shared_ptr<BirdState> newStatePtr = std::make_shared<DyingState>();
+            setState(newStatePtr);
             break;
         }
             
-        case 4: {
-            std::shared_ptr<GrowingState> growingState = std::dynamic_pointer_cast<GrowingState>(state_);
-            if (growingState) {
-                growingState->onDeath(id_);
-            }
-        }
+//        case 4: {
+//            std::shared_ptr<GrowingState> growingState = std::dynamic_pointer_cast<GrowingState>(state_);
+//            if (growingState) {
+//              growingState->onDeath(id_);
+//            }
+//        }
         default:
             break;
     }

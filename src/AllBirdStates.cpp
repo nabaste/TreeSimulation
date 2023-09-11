@@ -33,14 +33,14 @@ void LookingState::lookForMate(std::shared_ptr<Bird> bird_){
                 std::shared_ptr<BirdState> newStatePtr = std::make_shared<MatingState>(p);
                 std::shared_ptr<BirdState> newStateForPartner = std::make_shared<MatingState>(bird_);
                 bird_->setState(newStatePtr);
-                p->setState(newStatePtr);
+                p->setState(newStateForPartner);
                 return;
             }
             else if (bird_->branch()->id() == p->branch()->id() && p->getState()->id() == 0){
                 std::shared_ptr<BirdState> newStatePtr = std::make_shared<MatingState>(p);
                 std::shared_ptr<BirdState> newStateForPartner = std::make_shared<MatingState>(bird_);
                 bird_->setState(newStatePtr);
-                p->setState(newStatePtr);
+                p->setState(newStateForPartner);
                 return;
             }
             else if (bird_->branch()->id() != p->branch()->id() && p->getState()->id() == 0){
@@ -73,7 +73,9 @@ void MatingState::update(std::shared_ptr<Bird> bird_){
     if (!bird_->isMale()){
         spawnChild(bird_);
         if(rand() % 2){ //50% chance to keep spawning or start raising
-            std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>(children_);
+//            std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>(children_);
+            std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>();
+
             bird_->setState(newState);
             if(partner_ != nullptr){
                 partner_->setState(newState);
@@ -86,15 +88,15 @@ void MatingState::update(std::shared_ptr<Bird> bird_){
 void MatingState::spawnChild(std::shared_ptr<Bird> bird_){
     std::shared_ptr<Bird> birdPtr = std::make_shared<Bird>(bird_->getOfApp(), bird_->branch());
     bird_->getOfApp().subscribeAliveEntity(birdPtr);
-    children_.push_back(birdPtr);
+//    children_.push_back(birdPtr);
     std::shared_ptr<BirdState> initState = std::make_shared<GrowingState>();
     birdPtr->setState(initState);
     
-    std::shared_ptr<GrowingState> growingState = std::dynamic_pointer_cast<GrowingState>(birdPtr->getState());
-    if (growingState) {
-        growingState->addParent(bird_);
-        growingState->addParent(partner_);
-    }
+//    std::shared_ptr<GrowingState> growingState = std::dynamic_pointer_cast<GrowingState>(birdPtr->getState());
+//    if (growingState) {
+//        growingState->addParent(bird_);
+//        growingState->addParent(partner_);
+//    }
 }
 
 void MatingState::onPartnerDeath(){
@@ -105,60 +107,61 @@ void RaisingState::update(std::shared_ptr<Bird> bird_){
     bird_->eat();
     bird_->eat();
     
-    int childrenLeft = 0;
-    for(const auto& p : children_){
-        if(p){
-            if( p->getState()->id() == 4){
-                p->eat();
-                childrenLeft++;
-            }
-        }
-    }
-    if(childrenLeft == 0){
-        std::shared_ptr<BirdState> newState = std::make_shared<LookingState>();
-        bird_->setState(newState);
-    }
-}
-
-void RaisingState::looseChildren(){
-    children_.clear();
-}
-
-void RaisingState::onChildDeath(int id){
-
-    children_.erase(std::remove_if(children_.begin(), children_.end(),
-                                   [id](const std::shared_ptr<Bird>& e) { return e->id() == id; }),
-                    children_.end());
+//    int childrenLeft = 0;
+//    for(const auto& p : children_){
+//        if(p){
+//            if( p->getState()->id() == 4){
+//                p->eat();
+//                childrenLeft++;
+//            }
+//        }
+//    }
+//    if(childrenLeft == 0){
+//        std::shared_ptr<BirdState> newState = std::make_shared<LookingState>();
+//        bird_->setState(newState);
+//    }
+//}
+//
+//void RaisingState::looseChildren(){
+//    children_.clear();
+//}
+//
+//void RaisingState::onChildDeath(int id){
+//
+//    children_.erase(std::remove_if(children_.begin(), children_.end(),
+//                                   [id](const std::shared_ptr<Bird>& e) { return e->id() == id; }),
+//                    children_.end());
 }
 //----------------------------------------------------------------------------------------------------
 void GrowingState::update(std::shared_ptr<Bird> bird_){
+    bird_->eat();
     if( bird_->age() >= BIRD_INFANCY_PERCENTAGE * BIRD_LIFE_EXPECTANCY ){
         std::shared_ptr<BirdState> newState = std::make_shared<LookingState>();
         bird_->setState(newState);
         
     }
-    if( bird_->life() == previousLife_ ){
-        turnsWithoutEating_++;
-    } else {
-        turnsWithoutEating_ = 0;
-    }
-    if (turnsWithoutEating_ > 4 ){
-        bird_->die();
-    }
-}
+//    if( bird_->life() == previousLife_ ){
+//        turnsWithoutEating_++;
+//    } else {
+//        turnsWithoutEating_ = 0;
+//    }
+//    if (turnsWithoutEating_ > 4 ){
+//        bird_->die();
+//    }
+//}
 
-void GrowingState::addParent(std::shared_ptr<Bird> parent){
-    parents_.push_back(parent);
-}
-
-void GrowingState::onDeath(int id){
-        for(const auto& p : parents_){
-            //tecnicamente podrian estar mating tmbn pero la veo dificil
-            std::shared_ptr<RaisingState> raisingState = std::dynamic_pointer_cast<RaisingState>(p->getState());
-            raisingState->onChildDeath(id);
-        }
-    
-    parents_.clear();
+//void GrowingState::addParent(std::shared_ptr<Bird> parent){
+//    parents_.push_back(parent);
+//}
+//
+//void GrowingState::onDeath(int id){
+//        for(const auto& p : parents_){
+//            //tecnicamente podrian estar mating tmbn pero la veo dificil
+//            std::shared_ptr<RaisingState> raisingState = std::dynamic_pointer_cast<RaisingState>(p->getState());
+//            raisingState->onChildDeath(id);
+//        }
+//
+//    parents_.clear();
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -201,4 +204,8 @@ void MovingState::recheckDestination(){
         glm::vec3 mpt{(destination_->position.x - bird_->position.x)/travelDuration_, (destination_->position.y - bird_->position.y)/travelDuration_, 0} ;
         movementPerTurn_ = mpt;
     }
+}
+//----------------------------------------------------------------------------------------------------
+void DyingState::update(std::shared_ptr<Bird> bird_){
+    //...
 }

@@ -57,6 +57,9 @@ void Branch::removeDeadChildren()
 }
 
 void Branch:: die() {
+    if(id_ == 0){
+        ofApp_.playing = false;
+    }
     markedForDeath = true;
     std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
     

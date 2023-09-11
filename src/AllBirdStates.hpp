@@ -59,15 +59,16 @@ private:
 class RaisingState : public BirdState
 {
 public:
-    RaisingState(std::list<shared_ptr<Bird>> children) : BirdState(3), elapsedTurns_(0), children_(children) {}
-    
+//    RaisingState(std::list<shared_ptr<Bird>> children) : BirdState(3), elapsedTurns_(0), children_(children) {}
+    RaisingState() : BirdState(3), elapsedTurns_(0) {}
+
     virtual void update(std::shared_ptr<Bird> bird_);
-    void looseChildren();
-    void onChildDeath(int id);
+//    void looseChildren();
+//    void onChildDeath(int id);
     
 private:
     int elapsedTurns_;
-    std::list<shared_ptr<Bird>> children_;
+//    std::list<shared_ptr<Bird>> children_;
 };
 
 //--------------------------------------------------------------
@@ -77,13 +78,13 @@ public:
     GrowingState() : BirdState(4), turnsWithoutEating_(0), previousLife_(1) {}
     
     virtual void update(std::shared_ptr<Bird> bird_);
-    void addParent(std::shared_ptr<Bird>);
-    void onDeath(int id);
+//    void addParent(std::shared_ptr<Bird>);
+//    void onDeath(int id);
     
 private:
     int turnsWithoutEating_;
     float previousLife_;
-    std::list<shared_ptr<Bird>> parents_;
+//    std::list<shared_ptr<Bird>> parents_;
 };
 
 //--------------------------------------------------------------
@@ -104,5 +105,13 @@ private:
     glm::vec3 movementPerTurn_;
     std::shared_ptr<Bird> bird_;
     
+};
+//--------------------------------------------------------------
+class DyingState : public BirdState
+{
+public:
+    DyingState() : BirdState(0) {}
+    
+    virtual void update(std::shared_ptr<Bird> bird_);
 };
 #endif /* AllBirdStates_hpp */

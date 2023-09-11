@@ -40,30 +40,56 @@ void ofApp::setup(){
         aliveEntities_.push_back(birdPtr);
     }
     
+    playing = true;
     turnNo_ = 0;
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    std::list<shared_ptr<Branch>> branches = getBranches();
-    std::list<shared_ptr<Bird>> birds = getBirds();
-    branchGrowthPerTurn_ = TREE_GROWTH / branches.size();
-
-//    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [this](std::shared_ptr<Entity>& e) {
-//        e->update(e);
-//    });
-    std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
-        e->update(e);
-    });
-    std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
-        e->update(e);
-    });
-    
-    removeDeadEntities();
-    
-    turnNo_++;
+    if(playing){
+        std::list<shared_ptr<Branch>> branches = getBranches();
+        std::list<shared_ptr<Bird>> birds = getBirds();
+        branchGrowthPerTurn_ = TREE_GROWTH / branches.size();
+        
+        //    std::for_each(aliveEntities_.begin(), aliveEntities_.end(), [this](std::shared_ptr<Entity>& e) {
+        //        e->update(e);
+        //    });
+        std::cout << "This is turn " << turnNo_ << std::endl;
+        
+        std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
+            e->update(e);
+        });
+        
+        std::cout << "There are " << branches.size() << " branches alive." << std::endl;
+        std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
+        std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
+        });
+        
+        std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
+            e->update(e);
+        });
+        
+        
+        
+        std::cout << "There are " << birds.size() << " birds alive." << std::endl;
+        std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
+        std:cout << "Bird number " << e->id() << " ("<< e->isMale() << "-" << e->branch()->id() <<") has a life of " << e->life() << " and is in state " << e->getState()->id()<< std::endl;
+            if (e->getState()->id() == 5){
+                std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(e->getState());
+                std::cout << "->" << movingState->destination()->id() << std::endl;
+            };
+        });
+        std::cout << "             "<<std::endl;
+        
+        removeDeadEntities();
+        
+        turnNo_++;
+        
+        if( turnNo_ % 50 == 0){
+            
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -71,10 +97,8 @@ void ofApp::draw(){
     std::list<shared_ptr<Branch>> branches = getBranches();
     std::list<shared_ptr<Bird>> birds = getBirds();
     
-    std::cout << "This is turn " << turnNo_ << std::endl;
-    std::cout << "There are " << branches.size() << " branches alive." << std::endl;
+   
     std::for_each(branches.begin(), branches.end(), [](std::shared_ptr<Branch>& e) {
-        std:cout << "Branch number " << e->id() << " has a life of " << e->life() << std::endl;
         ofColor color1(135 + 40*e->stepsFromRoot(), 234, 54);
         ofSetColor(color1);
         ofDrawCircle(e->position.x * ofGetWidth(), e->position.y * ofGetHeight(), e->life()/3.0);
@@ -83,18 +107,18 @@ void ofApp::draw(){
     ofColor color2(235, 134, 54);
     ofSetColor(color2);
     
-    std::cout << "There are " << birds.size() << " birds alive." << std::endl;
+    
     std::for_each(birds.begin(), birds.end(), [](std::shared_ptr<Bird>& e) {
         glm::vec3 screenPos{e->position.x * ofGetWidth(), e->position.y * ofGetHeight(), 0};
-        ofDrawRectangle(screenPos, 10, 10);
-    std:cout << "Bird number " << e->id() << " ("<< e->isMale() << "-" << e->branch()->id() <<") has a life of " << e->life() << " and is in state " << e->getState()->id()<< std::endl;
-        if (e->getState()->id() == 5){
-            std::shared_ptr<MovingState> movingState = std::dynamic_pointer_cast<MovingState>(e->getState());
-            std::cout << "->" << movingState->destination()->id() << std::endl;
-        };
-        
+        ofDrawRectangle(screenPos, 10, 10); 
     });
-    std::cout << "             "<<std::endl;
+    
+    if(!playing){
+        ofColor color3(235, 12, 13);
+        ofSetColor(color3);
+        glm::vec3 screenPos{0.5 * ofGetWidth(), 0.5 * ofGetHeight(), 0};
+        ofDrawRectangle(screenPos, 100, 100);
+    }
 
 }
 
