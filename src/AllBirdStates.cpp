@@ -76,11 +76,10 @@ void MatingState::update(std::shared_ptr<Bird> bird_){
 //            std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>(children_);
             std::shared_ptr<BirdState> newState = std::make_shared<RaisingState>();
 
-            bird_->setState(newState);
             if(partner_ != nullptr){
                 partner_->setState(newState);
-
             }
+            bird_->setState(newState);
         }
     }
 }
@@ -100,7 +99,7 @@ void MatingState::spawnChild(std::shared_ptr<Bird> bird_){
 }
 
 void MatingState::onPartnerDeath(){
-    partner_=nullptr;
+    partner_ = nullptr;
 }
 //----------------------------------------------------------------------------------------------------
 void RaisingState::update(std::shared_ptr<Bird> bird_){
