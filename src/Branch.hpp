@@ -21,7 +21,7 @@ public:
     //getters & setters
     int stepsFromRoot() const { return stepsFromRoot_; }
     void addChild(std::shared_ptr<Branch> child);
-    void setParent(std::shared_ptr<Branch> parent) { parent_ = parent; }
+    std::vector<std::shared_ptr<Branch>> children() { return children_; }
     
     //simulation
     virtual void update(std::shared_ptr<Entity> e) override;
@@ -29,6 +29,7 @@ public:
     void spawnChild();
     void looseLife(float amount);
     void removeDeadChildren();
+    void killChildren();
     void die() override;
     
     //render
@@ -37,7 +38,6 @@ public:
 private:
     int stepsFromRoot_;
     
-    std::shared_ptr<Branch> parent_;
     std::vector<std::shared_ptr<Branch>> children_;
     ofApp& ofApp_;
 };

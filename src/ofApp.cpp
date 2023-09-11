@@ -256,6 +256,12 @@ std::list<shared_ptr<Bird>> ofApp::getBirds(){
     return result;
 }
 
+void ofApp::onBranchDeath(){
+    for(const auto& b : getBranches()){
+        b->removeDeadChildren();
+    }
+}
+
 void ofApp::removeDeadEntities()
 {
     aliveEntities_.erase(std::remove_if(aliveEntities_.begin(), aliveEntities_.end(),

@@ -10,7 +10,7 @@
 
 const int BIRD_LIFE_EXPECTANCY = 350;
 const float BIRD_STARTING_LIFE = 100;
-const float BIRD_FOOD_CONSUMPTION = 0.1;
+const float BIRD_FOOD_CONSUMPTION = 0.35;
 const float BIRD_MATING_POINT = 135;
 const float BIRD_MATING_RESULT = 75;
 const float BIRD_LIFE_GROWTH = 0.9;

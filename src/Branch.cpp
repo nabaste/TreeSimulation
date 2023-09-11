@@ -9,13 +9,11 @@
 
 Branch::Branch(ofApp& ofApp, int steps) : Entity(BRANCH_STARTING_LIFE), ofApp_(ofApp), stepsFromRoot_(steps) {
     id_=ofApp.getNewBranchId();
-    parent_ = nullptr;
 };
 
 void Branch::addChild(std::shared_ptr<Branch> child){
     
     children_.push_back(child);
-    child->setParent(std::make_shared<Branch>(*this));
     
 }
 
@@ -54,6 +52,14 @@ void Branch::removeDeadChildren()
     children_.erase(std::remove_if(children_.begin(), children_.end(),
     [](const std::shared_ptr<Branch>& e) {return e->markedForDeath;}),
                     children_.end());
+//    auto it = children_.begin();
+//    while (it != children_.end()){
+//        if ((*it)->markedForDeath){
+//            it = children_.erase(it);
+//        } else {
+//            it++;
+//        }
+//    }
 }
 
 void Branch:: die() {
@@ -61,7 +67,10 @@ void Branch:: die() {
         ofApp_.playing = false;
     }
     markedForDeath = true;
-    std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch> e) {e->die();});
+//    std::for_each(children_.begin(), children_.end(), [](std::shared_ptr<Branch>& e) {
+//        e->markedForDeath = true;
+//    });
+    killChildren();
     
     for(const auto& p : ofApp_.getBirds()){
         if(p->branch()->id() == id_){
@@ -69,10 +78,38 @@ void Branch:: die() {
         }
     }
     
-    removeDeadChildren();
-    parent_->removeDeadChildren();
-    parent_ = nullptr;
+    ofApp_.onBranchDeath();
+//    removeDeadChildren();
 }
+
+void Branch::killChildren(){
+
+
+    std::queue<std::shared_ptr<Branch>> nodeQueue;
+    
+    for (const auto& child : children_) {
+        nodeQueue.push(child);
+    }
+
+    while (!nodeQueue.empty()) {
+        const std::shared_ptr<Branch> currentNode = nodeQueue.front();
+        nodeQueue.pop();
+        
+        //Mark for death and remove all birds from all child branches
+        currentNode->markedForDeath = true;
+        for(const auto& p : ofApp_.getBirds()){
+            if(p->branch()->id() == currentNode->id()){
+                p->onBranchDeath(p);
+            }
+        }
+        
+        const auto& children = currentNode->children();
+        for (const auto& child : children) {
+            nodeQueue.push(child);
+        }
+    }
+}
+
 void Branch::relocateChildren()
 {
     float separation = 0.15 * exp(-0.5 * stepsFromRoot_);
