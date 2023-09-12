@@ -66,6 +66,7 @@ void Bird::onBranchDeath(std::shared_ptr<Bird> birdPtr){
                 std::shared_ptr<BirdState> newStatePtr = std::make_shared<MovingState>(birdPtr , nextStatePtr, destination);
                 setState(newStatePtr);
             }
+            break;
         }
         case 4:{ //growing
             die();
@@ -112,6 +113,7 @@ void Bird::die(){
 //            if (growingState) {
 //              growingState->onDeath(id_);
 //            }
+            break;
 //        }
         default:
             break;
