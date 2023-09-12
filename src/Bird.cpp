@@ -113,7 +113,7 @@ void Bird::die(){
 //            if (growingState) {
 //              growingState->onDeath(id_);
 //            }
-            break;
+//           break;
 //        }
         default:
             break;
