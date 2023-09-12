@@ -221,17 +221,25 @@ std::shared_ptr<Branch> ofApp::getRandomViableBranch(int seed){
     
     srand(seed);
     std::vector<std::shared_ptr<Branch>> viableBranches;
+    std::vector<std::shared_ptr<Branch>> unviableBranches;
     
     for(auto& branch : getBranches()){
         if (branch->life() > BRANCH_VIABLE_LIFE && !branch->markedForDeath){
             viableBranches.push_back(branch);
+        } else if ( !branch->markedForDeath){
+            unviableBranches.push_back(branch);
         }
     }
     
-    int pick = rand() % viableBranches.size();
-    
-    return viableBranches[pick];
-    
+    if (!viableBranches.empty()){
+        int pick = rand() % viableBranches.size();
+        return viableBranches[pick];
+    } else if (!unviableBranches.empty()){
+        int pick = rand() % unviableBranches.size();
+        return unviableBranches[pick];
+    } else {
+        gameOver();
+    }
 }
 
 std::list<shared_ptr<Branch>> ofApp::getBranches(){
@@ -239,7 +247,9 @@ std::list<shared_ptr<Branch>> ofApp::getBranches(){
     for (const auto& entityPtr : aliveEntities_) {
         // Check if the dynamic type of the object pointed to by entityPtr is Branch
         if (dynamic_cast<Branch*>(entityPtr.get()) != nullptr) {
-            result.push_back(std::dynamic_pointer_cast<Branch>(entityPtr));
+            if ( !entityPtr->markedForDeath ){
+                result.push_back(std::dynamic_pointer_cast<Branch>(entityPtr));
+            }
         }
     }
     return result;
@@ -267,4 +277,10 @@ void ofApp::removeDeadEntities()
     aliveEntities_.erase(std::remove_if(aliveEntities_.begin(), aliveEntities_.end(),
                                    [](const std::shared_ptr<Entity>& e) { return e->markedForDeath; }),
                          aliveEntities_.end());
+}
+
+void ofApp::gameOver(){
+    playing = false;
+    std::cout << "GAME OVER" << std::endl;
+    //here goes the logic for the game end.
 }

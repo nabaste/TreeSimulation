@@ -8,14 +8,14 @@
 #ifndef Constants_h
 #define Constants_h
 
-const int BIRD_LIFE_EXPECTANCY = 350;
+const int BIRD_LIFE_EXPECTANCY = 450;
 const float BIRD_STARTING_LIFE = 100;
 const float BIRD_FOOD_CONSUMPTION = 0.35;
 const float BIRD_MATING_POINT = 135;
 const float BIRD_MATING_RESULT = 75;
-const float BIRD_LIFE_GROWTH = 0.9;
+const float BIRD_LIFE_GROWTH = 1.2;
 const float BIRD_INFANCY_PERCENTAGE = 0.2;
-const float BIRD_DISTANCE_TRAVELLED_PER_TURN = 0.1;
+const float BIRD_DISTANCE_TRAVELLED_PER_TURN = 0.4;
 const int BIRD_TURNS_LOOKING_FOR_MATE = 10;
 const int BIRD_TURNS_WAITING_FOR_MATE = 25;
 

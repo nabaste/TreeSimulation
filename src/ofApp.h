@@ -47,7 +47,7 @@ public:
         std::shared_ptr<Branch> getRandomViableBranch(int seed);
         void onBranchDeath();
         void removeDeadEntities();
-    
+        void gameOver();
     //render
     
 private:

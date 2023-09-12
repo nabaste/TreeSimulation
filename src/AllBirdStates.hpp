@@ -110,7 +110,7 @@ private:
 class DyingState : public BirdState
 {
 public:
-    DyingState() : BirdState(0) {}
+    DyingState() : BirdState(6) {}
     
     virtual void update(std::shared_ptr<Bird> bird_);
 };
