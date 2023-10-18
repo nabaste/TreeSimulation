@@ -220,21 +220,27 @@ std::shared_ptr<Branch> ofApp::getLiveliestBranch(){
 std::shared_ptr<Branch> ofApp::getRandomViableBranch(int seed){
     
     srand(seed);
+    std::vector<std::shared_ptr<Branch>> superViableBranches;
     std::vector<std::shared_ptr<Branch>> viableBranches;
     std::vector<std::shared_ptr<Branch>> unviableBranches;
     
     for(auto& branch : getBranches()){
-        if (branch->life() > BRANCH_VIABLE_LIFE && !branch->markedForDeath){
+        if (branch->life() > BRANCH_VIABLE_LIFE && !branch->markedForDeath && branch->stepsFromRoot() > 2){
+            superViableBranches.push_back(branch);
+        } else if (branch->life() > BRANCH_VIABLE_LIFE && !branch->markedForDeath){
             viableBranches.push_back(branch);
         } else if ( !branch->markedForDeath){
             unviableBranches.push_back(branch);
         }
     }
     
-    if (!viableBranches.empty()){
+    if (!superViableBranches.empty()){
+        int pick = rand() % superViableBranches.size();
+        return superViableBranches[pick];
+    } else if(!viableBranches.empty()) {
         int pick = rand() % viableBranches.size();
         return viableBranches[pick];
-    } else if (!unviableBranches.empty()){
+    }else if (!unviableBranches.empty()){
         int pick = rand() % unviableBranches.size();
         return unviableBranches[pick];
     } else {

@@ -130,6 +130,13 @@ void RaisingState::update(std::shared_ptr<Bird> bird_){
 //    children_.erase(std::remove_if(children_.begin(), children_.end(),
 //                                   [id](const std::shared_ptr<Bird>& e) { return e->id() == id; }),
 //                    children_.end());
+    elapsedTurns_++;
+    if( elapsedTurns_ >= BIRD_INFANCY_PERCENTAGE * BIRD_LIFE_EXPECTANCY ){
+        std::shared_ptr<BirdState> newState = std::make_shared<LookingState>();
+        bird_->setState(newState);
+        
+    }
+    
 }
 //----------------------------------------------------------------------------------------------------
 void GrowingState::update(std::shared_ptr<Bird> bird_){
